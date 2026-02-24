@@ -1,0 +1,107 @@
+{
+  "5c39eff2-cd96-416a-826b-8bd4d92158fc": {
+    "requestId": "5c39eff2-cd96-416a-826b-8bd4d92158fc",
+    "deviceId": "a5f4e9f440f31f01bd25bb9ffe116741bf624defb3c9d1769b4e3f779afaf133",
+    "publicKey": "_K_mHBhK9ksWM6dWn0FluHmIjiYhkWJnJuniA9h1m84",
+    "platform": "Win32",
+    "clientId": "openclaw-control-ui",
+    "clientMode": "webchat",
+    "role": "operator",
+    "roles": [
+      "operator"
+    ],
+    "scopes": [
+      "operator.admin",
+      "operator.approvals",
+      "operator.pairing"
+    ],
+    "remoteIp": "172.19.0.1",
+    "silent": false,
+    "isRepair": false,
+    "ts": 1771489237774
+  },
+  "1479dc8b-c747-40d1-b54b-3f1842b1840a": {
+    "requestId": "1479dc8b-c747-40d1-b54b-3f1842b1840a",
+    "deviceId": "fd110b560fb64d5a86f800988d2390d1e5b5e4726cf4e67ee49e1772788fb8e7",
+    "publicKey": "xyv5YXKLICyLJgHSAagTfKzbxvilI0_DJqfnQ6ZNhYc",
+    "platform": "Win32",
+    "clientId": "openclaw-control-ui",
+    "clientMode": "webchat",
+    "role": "operator",
+    "roles": [
+      "operator"
+    ],
+    "scopes": [
+      "operator.admin",
+      "operator.approvals",
+      "operator.pairing"
+    ],
+    "remoteIp": "172.19.0.1",
+    "silent": false,
+    "isRepair": false,
+    "ts": 1771489523097
+  },
+  "8ffe0b49-42c2-4068-8938-ece40fce6c87": {
+    "requestId": "8ffe0b49-42c2-4068-8938-ece40fce6c87",
+    "deviceId": "9209af60828103252b04798d5d19677def5ef365e28b36efd1c1ef27f04ff318",
+    "publicKey": "84JZ6CZZBr3B6JHpncpLMbhb-N2B7fZzTJ4UvfQB1Wk",
+    "platform": "Win32",
+    "clientId": "openclaw-control-ui",
+    "clientMode": "webchat",
+    "role": "operator",
+    "roles": [
+      "operator"
+    ],
+    "scopes": [
+      "operator.admin",
+      "operator.approvals",
+      "operator.pairing"
+    ],
+    "remoteIp": "172.19.0.1",
+    "silent": false,
+    "isRepair": false,
+    "ts": 1771489535012
+  },
+  "d8123f0e-80b8-4163-9f34-e1f370cbb73d": {
+    "requestId": "d8123f0e-80b8-4163-9f34-e1f370cbb73d",
+    "deviceId": "9209af60828103252b04798d5d19677def5ef365e28b36efd1c1ef27f04ff318",
+    "publicKey": "84JZ6CZZBr3B6JHpncpLMbhb-N2B7fZzTJ4UvfQB1Wk",
+    "platform": "Win32",
+    "clientId": "openclaw-control-ui",
+    "clientMode": "webchat",
+    "role": "operator",
+    "roles": [
+      "operator"
+    ],
+    "scopes": [
+      "operator.admin",
+      "operator.approvals",
+      "operator.pairing"
+    ],
+    "remoteIp": "172.19.0.1",
+    "silent": false,
+    "isRepair": false,
+    "ts": 1771489599001
+  },
+  "537fde85-735e-469a-a5cd-7c96284498c9": {
+    "requestId": "537fde85-735e-469a-a5cd-7c96284498c9",
+    "deviceId": "fd110b560fb64d5a86f800988d2390d1e5b5e4726cf4e67ee49e1772788fb8e7",
+    "publicKey": "xyv5YXKLICyLJgHSAagTfKzbxvilI0_DJqfnQ6ZNhYc",
+    "platform": "Win32",
+    "clientId": "openclaw-control-ui",
+    "clientMode": "webchat",
+    "role": "operator",
+    "roles": [
+      "operator"
+    ],
+    "scopes": [
+      "operator.admin",
+      "operator.approvals",
+      "operator.pairing"
+    ],
+    "remoteIp": "172.19.0.1",
+    "silent": false,
+    "isRepair": false,
+    "ts": 1771489609771
+  }
+}

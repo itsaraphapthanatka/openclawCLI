@@ -1,0 +1,15 @@
+{
+    "swarm": {
+        "status": "active",
+        "agents": [
+            "coordinator",
+            "backend_dev",
+            "frontend_dev",
+            "qa_engineer",
+            "browser_agent",
+            "data_analyst"
+        ],
+        "activeTasks": [],
+        "completedTasks": []
+    }
+}
