@@ -199,6 +199,7 @@
     "controlUi": {
       "dangerouslyDisableDeviceAuth": true,
       "allowedOrigins": [
+        "http://136.110.50.115:18789",
         "*"
       ]
     },
