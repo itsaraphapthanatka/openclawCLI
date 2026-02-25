@@ -197,7 +197,10 @@
     "mode": "local",
     "bind": "lan",
     "controlUi": {
-      "dangerouslyDisableDeviceAuth": true
+      "dangerouslyDisableDeviceAuth": true,
+      "allowedOrigins": [
+        "*"
+      ]
     },
     "auth": {
       "mode": "token",
