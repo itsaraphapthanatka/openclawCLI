@@ -91,6 +91,23 @@
     }
   },
   "agents": {
+    "list": [
+      {
+        "id": "main",
+        "default": true,
+        "workspace": "/home/node/.openclaw/workspace",
+        "model": {
+          "primary": "moonshot/kimi-k2.5"
+        }
+      },
+      {
+        "id": "unjai",
+        "workspace": "/home/node/.openclaw/workspace-unjai",
+        "model": {
+          "primary": "moonshot/kimi-k2.5"
+        }
+      }
+    ],
     "defaults": {
       "model": {
         "primary": "moonshot/kimi-k2.5"
@@ -116,6 +133,15 @@
       }
     }
   },
+  "bindings": [
+    {
+      "agentId": "unjai",
+      "match": {
+        "channel": "telegram",
+        "accountId": "bot3"
+      }
+    }
+  ],
   "messages": {
     "ackReactionScope": "group-mentions"
   },
@@ -142,6 +168,18 @@
         "bot2": {
           "enabled": true,
           "botToken": "${TELEGRAM_BOT_TOKEN_2}",
+          "dmPolicy": "pairing",
+          "groupPolicy": "allowlist",
+          "streamMode": "partial",
+          "actions": {
+            "reactions": true,
+            "sendMessage": true,
+            "sticker": true
+          }
+        },
+        "bot3": {
+          "enabled": true,
+          "botToken": "${TELEGRAM_BOT_TOKEN_3}",
           "dmPolicy": "pairing",
           "groupPolicy": "allowlist",
           "streamMode": "partial",

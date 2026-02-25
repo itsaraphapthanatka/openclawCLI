@@ -1,11 +1,11 @@
 {
-  "b195b1dc-4220-4c60-9a2b-4c62dcb0d19c": {
-    "requestId": "b195b1dc-4220-4c60-9a2b-4c62dcb0d19c",
-    "deviceId": "7e5b1e0643862e22b1edf8dce240ea52774b35ba113d4f3885ea44cab6127ac5",
-    "publicKey": "O8fn0th8OP3Rh0CT-8l3qYh23IzwbOqC49hE9f1Bss4",
-    "platform": "linux",
-    "clientId": "cli",
-    "clientMode": "cli",
+  "9d16c871-9dc1-4c82-bfaa-a9da96cc4db5": {
+    "requestId": "9d16c871-9dc1-4c82-bfaa-a9da96cc4db5",
+    "deviceId": "9209af60828103252b04798d5d19677def5ef365e28b36efd1c1ef27f04ff318",
+    "publicKey": "84JZ6CZZBr3B6JHpncpLMbhb-N2B7fZzTJ4UvfQB1Wk",
+    "platform": "Win32",
+    "clientId": "openclaw-control-ui",
+    "clientMode": "webchat",
     "role": "operator",
     "roles": [
       "operator"
@@ -15,9 +15,9 @@
       "operator.approvals",
       "operator.pairing"
     ],
-    "remoteIp": "172.19.0.2",
+    "remoteIp": "172.19.0.1",
     "silent": false,
     "isRepair": false,
-    "ts": 1771498667524
+    "ts": 1772010251939
   }
 }
