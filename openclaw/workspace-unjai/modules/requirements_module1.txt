@@ -1,0 +1,30 @@
+# Module 1: The Brain - Dependencies
+
+# Vector Database
+pinecone-client>=5.0.0
+
+# Embeddings
+openai>=1.0.0
+
+# Database
+psycopg2-binary>=2.9.9
+
+# Caching
+redis>=5.0.0
+
+# Utilities
+tenacity>=8.2.0
+python-dotenv>=1.0.0
+
+# Data Processing
+numpy>=1.24.0
+
+# Testing (optional)
+pytest>=7.4.0
+pytest-asyncio>=0.21.0
+
+# Thai NLP (optional - for better Thai text processing)
+pythainlp>=4.0.0
+
+# Type Checking
+mypy>=1.5.0

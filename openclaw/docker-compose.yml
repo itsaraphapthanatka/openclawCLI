@@ -21,6 +21,10 @@ services:
       - ${OPENCLAW_WORKSPACE_DIR}:/home/node/.openclaw/workspace
       - ./shared-memory:/home/node/.openclaw/shared-memory
       - ./workspace-unjai:/home/node/.openclaw/workspace-unjai
+      - ./templates/USER.md:/app/docs/reference/templates/USER.md
+      - ./templates/AGENTS.md:/app/docs/reference/templates/AGENTS.md
+      - ./templates/SOUL.md:/app/docs/reference/templates/SOUL.md
+      - ./templates/IDENTITY.md:/app/docs/reference/templates/IDENTITY.md
     ports:
       - "${OPENCLAW_GATEWAY_PORT:-18789}:18789"
       - "${OPENCLAW_BRIDGE_PORT:-18790}:18790"
@@ -44,6 +48,10 @@ services:
       - ${OPENCLAW_WORKSPACE_DIR}:/home/node/.openclaw/workspace
       - ./shared-memory:/home/node/.openclaw/shared-memory
       - ./workspace-unjai:/home/node/.openclaw/workspace-unjai
+      - ./templates/USER.md:/app/docs/reference/templates/USER.md
+      - ./templates/AGENTS.md:/app/docs/reference/templates/AGENTS.md
+      - ./templates/SOUL.md:/app/docs/reference/templates/SOUL.md
+      - ./templates/IDENTITY.md:/app/docs/reference/templates/IDENTITY.md
     stdin_open: true
     tty: true
     init: true

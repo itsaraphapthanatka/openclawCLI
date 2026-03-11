@@ -1,27 +1,8 @@
 {
   "agent:main:main": {
     "sessionId": "c1647d17-8571-495e-acc1-7e25a4203352",
-    "updatedAt": 1771848983290,
+    "updatedAt": 1772589029824,
     "systemSent": true,
-    "abortedLastRun": false,
-    "chatType": "direct",
-    "deliveryContext": {
-      "channel": "telegram",
-      "to": "telegram:6636286380",
-      "accountId": "bot1"
-    },
-    "lastChannel": "telegram",
-    "origin": {
-      "provider": "telegram",
-      "surface": "telegram",
-      "chatType": "direct",
-      "label": "Kurosaji Ijiko (@Kurosajiijiko) id:6636286380",
-      "from": "telegram:6636286380",
-      "to": "telegram:6636286380",
-      "accountId": "bot1"
-    },
-    "sessionFile": "/home/node/.openclaw/agents/main/sessions/c1647d17-8571-495e-acc1-7e25a4203352.jsonl",
-    "compactionCount": 0,
     "skillsSnapshot": {
       "prompt": "\n\nThe following skills provide specialized instructions for specific tasks.\nUse the read tool to load a skill's file when the task matches its description.\nWhen a skill file references a relative path, resolve it against the skill directory (parent of SKILL.md / dirname of the path) and use that absolute path in tool commands.\n\n<available_skills>\n  <skill>\n    <name>healthcheck</name>\n    <description>Host security hardening and risk-tolerance configuration for OpenClaw deployments. Use when a user asks for security audits, firewall/SSH/update hardening, risk posture, exposure review, OpenClaw cron scheduling for periodic checks, or version status checks on a machine running OpenClaw (laptop, workstation, Pi, VPS).</description>\n    <location>/app/skills/healthcheck/SKILL.md</location>\n  </skill>\n  <skill>\n    <name>openai-image-gen</name>\n    <description>Batch-generate images via OpenAI Images API. Random prompt sampler + `index.html` gallery.</description>\n    <location>/app/skills/openai-image-gen/SKILL.md</location>\n  </skill>\n  <skill>\n    <name>openai-whisper-api</name>\n    <description>Transcribe audio via OpenAI Audio Transcriptions API (Whisper).</description>\n    <location>/app/skills/openai-whisper-api/SKILL.md</location>\n  </skill>\n  <skill>\n    <name>skill-creator</name>\n    <description>Create or update AgentSkills. Use when designing, structuring, or packaging skills with scripts, references, and assets.</description>\n    <location>/app/skills/skill-creator/SKILL.md</location>\n  </skill>\n  <skill>\n    <name>weather</name>\n    <description>Get current weather and forecasts via wttr.in or Open-Meteo. Use when: user asks about weather, temperature, or forecasts for any location. NOT for: historical weather data, severe weather alerts, or detailed meteorological analysis. No API key needed.</description>\n    <location>/app/skills/weather/SKILL.md</location>\n  </skill>\n</available_skills>",
       "skills": [
@@ -87,15 +68,35 @@
       ],
       "version": 0
     },
-    "authProfileOverride": "moonshot:default",
-    "authProfileOverrideSource": "auto",
-    "authProfileOverrideCompactionCount": 0,
+    "deliveryContext": {
+      "channel": "telegram",
+      "to": "telegram:6636286380",
+      "accountId": "bot1"
+    },
+    "lastChannel": "telegram",
+    "lastTo": "telegram:6636286380",
+    "lastAccountId": "bot1",
+    "channel": "telegram",
+    "sessionFile": "/home/node/.openclaw/agents/main/sessions/c1647d17-8571-495e-acc1-7e25a4203352.jsonl",
     "modelProvider": "moonshot",
     "model": "kimi-k2.5",
     "contextTokens": 131072,
+    "abortedLastRun": false,
+    "totalTokens": 86537,
+    "totalTokensFresh": true,
+    "origin": {
+      "label": "Kurosaji Ijiko (@Kurosajiijiko) id:6636286380",
+      "provider": "telegram",
+      "surface": "telegram",
+      "chatType": "direct",
+      "from": "telegram:6636286380",
+      "to": "telegram:6636286380",
+      "accountId": "bot1"
+    },
+    "chatType": "direct",
     "systemPromptReport": {
       "source": "run",
-      "generatedAt": 1771848952786,
+      "generatedAt": 1772588994591,
       "sessionId": "c1647d17-8571-495e-acc1-7e25a4203352",
       "sessionKey": "agent:main:main",
       "provider": "moonshot",
@@ -108,25 +109,25 @@
         "sandboxed": false
       },
       "systemPrompt": {
-        "chars": 26792,
-        "projectContextChars": 14421,
-        "nonProjectContextChars": 12371
+        "chars": 32509,
+        "projectContextChars": 21138,
+        "nonProjectContextChars": 11371
       },
       "injectedWorkspaceFiles": [
         {
           "name": "AGENTS.md",
           "path": "/home/node/.openclaw/workspace/AGENTS.md",
           "missing": false,
-          "rawChars": 7804,
-          "injectedChars": 7804,
-          "truncated": false
+          "rawChars": 23078,
+          "injectedChars": 18110,
+          "truncated": true
         },
         {
           "name": "SOUL.md",
           "path": "/home/node/.openclaw/workspace/SOUL.md",
           "missing": false,
-          "rawChars": 2503,
-          "injectedChars": 2503,
+          "rawChars": 0,
+          "injectedChars": 0,
           "truncated": false
         },
         {
@@ -141,16 +142,16 @@
           "name": "IDENTITY.md",
           "path": "/home/node/.openclaw/workspace/IDENTITY.md",
           "missing": false,
-          "rawChars": 633,
-          "injectedChars": 633,
+          "rawChars": 258,
+          "injectedChars": 258,
           "truncated": false
         },
         {
           "name": "USER.md",
           "path": "/home/node/.openclaw/workspace/USER.md",
           "missing": false,
-          "rawChars": 474,
-          "injectedChars": 474,
+          "rawChars": 0,
+          "injectedChars": 0,
           "truncated": false
         },
         {
@@ -196,8 +197,8 @@
         ]
       },
       "tools": {
-        "listChars": 2083,
-        "schemaChars": 15712,
+        "listChars": 1782,
+        "schemaChars": 14959,
         "entries": [
           {
             "name": "read",
@@ -248,28 +249,16 @@
             "propertiesCount": 33
           },
           {
-            "name": "cron",
-            "summaryChars": 2689,
-            "schemaChars": 662,
-            "propertiesCount": 13
-          },
-          {
             "name": "message",
             "summaryChars": 157,
-            "schemaChars": 3951,
-            "propertiesCount": 84
+            "schemaChars": 4247,
+            "propertiesCount": 85
           },
           {
             "name": "tts",
             "summaryChars": 152,
             "schemaChars": 223,
             "propertiesCount": 2
-          },
-          {
-            "name": "gateway",
-            "summaryChars": 354,
-            "schemaChars": 465,
-            "propertiesCount": 11
           },
           {
             "name": "agents_list",
@@ -297,9 +286,9 @@
           },
           {
             "name": "sessions_spawn",
-            "summaryChars": 107,
-            "schemaChars": 336,
-            "propertiesCount": 8
+            "summaryChars": 144,
+            "schemaChars": 414,
+            "propertiesCount": 10
           },
           {
             "name": "subagents",
@@ -315,7 +304,7 @@
           },
           {
             "name": "web_search",
-            "summaryChars": 175,
+            "summaryChars": 109,
             "schemaChars": 753,
             "propertiesCount": 6
           },
@@ -333,7 +322,7 @@
           },
           {
             "name": "memory_search",
-            "summaryChars": 235,
+            "summaryChars": 334,
             "schemaChars": 139,
             "propertiesCount": 3
           },
@@ -346,16 +335,20 @@
         ]
       }
     },
-    "lastTo": "telegram:6636286380",
-    "lastAccountId": "bot1",
-    "inputTokens": 41037,
-    "outputTokens": 979,
-    "totalTokens": 46925,
-    "totalTokensFresh": true
+    "compactionCount": 5,
+    "memoryFlushAt": 1772269998675,
+    "memoryFlushCompactionCount": 4,
+    "inputTokens": 5067,
+    "outputTokens": 876,
+    "cacheRead": 412928,
+    "cacheWrite": 0,
+    "authProfileOverride": "moonshot:default",
+    "authProfileOverrideSource": "auto",
+    "authProfileOverrideCompactionCount": 5
   },
   "agent:main:telegram:group:-1003827699010": {
     "sessionId": "7934b131-66bd-40a3-b973-cc1182faa5c2",
-    "updatedAt": 1772010846473,
+    "updatedAt": 1772090176874,
     "systemSent": true,
     "abortedLastRun": false,
     "displayName": "telegram:g-ai-group",
@@ -450,16 +443,16 @@
     "authProfileOverride": "moonshot:default",
     "authProfileOverrideSource": "auto",
     "authProfileOverrideCompactionCount": 0,
-    "inputTokens": 5707,
-    "outputTokens": 231,
-    "totalTokens": 12363,
+    "inputTokens": 1381,
+    "outputTokens": 533,
+    "totalTokens": 14241,
     "totalTokensFresh": true,
     "modelProvider": "moonshot",
     "model": "kimi-k2.5",
     "contextTokens": 131072,
     "systemPromptReport": {
       "source": "run",
-      "generatedAt": 1772010837018,
+      "generatedAt": 1772090076090,
       "sessionId": "7934b131-66bd-40a3-b973-cc1182faa5c2",
       "sessionKey": "agent:main:telegram:group:-1003827699010",
       "provider": "moonshot",
@@ -472,25 +465,25 @@
         "sandboxed": false
       },
       "systemPrompt": {
-        "chars": 27491,
-        "projectContextChars": 14421,
-        "nonProjectContextChars": 13070
+        "chars": 32703,
+        "projectContextChars": 21138,
+        "nonProjectContextChars": 11565
       },
       "injectedWorkspaceFiles": [
         {
           "name": "AGENTS.md",
           "path": "/home/node/.openclaw/workspace/AGENTS.md",
           "missing": false,
-          "rawChars": 7804,
-          "injectedChars": 7804,
-          "truncated": false
+          "rawChars": 23078,
+          "injectedChars": 18110,
+          "truncated": true
         },
         {
           "name": "SOUL.md",
           "path": "/home/node/.openclaw/workspace/SOUL.md",
           "missing": false,
-          "rawChars": 2503,
-          "injectedChars": 2503,
+          "rawChars": 0,
+          "injectedChars": 0,
           "truncated": false
         },
         {
@@ -505,16 +498,16 @@
           "name": "IDENTITY.md",
           "path": "/home/node/.openclaw/workspace/IDENTITY.md",
           "missing": false,
-          "rawChars": 633,
-          "injectedChars": 633,
+          "rawChars": 258,
+          "injectedChars": 258,
           "truncated": false
         },
         {
           "name": "USER.md",
           "path": "/home/node/.openclaw/workspace/USER.md",
           "missing": false,
-          "rawChars": 474,
-          "injectedChars": 474,
+          "rawChars": 0,
+          "injectedChars": 0,
           "truncated": false
         },
         {
@@ -560,8 +553,8 @@
         ]
       },
       "tools": {
-        "listChars": 2083,
-        "schemaChars": 15712,
+        "listChars": 1782,
+        "schemaChars": 14959,
         "entries": [
           {
             "name": "read",
@@ -612,28 +605,16 @@
             "propertiesCount": 33
           },
           {
-            "name": "cron",
-            "summaryChars": 2689,
-            "schemaChars": 662,
-            "propertiesCount": 13
-          },
-          {
             "name": "message",
             "summaryChars": 157,
-            "schemaChars": 3951,
-            "propertiesCount": 84
+            "schemaChars": 4247,
+            "propertiesCount": 85
           },
           {
             "name": "tts",
             "summaryChars": 152,
             "schemaChars": 223,
             "propertiesCount": 2
-          },
-          {
-            "name": "gateway",
-            "summaryChars": 354,
-            "schemaChars": 465,
-            "propertiesCount": 11
           },
           {
             "name": "agents_list",
@@ -661,9 +642,9 @@
           },
           {
             "name": "sessions_spawn",
-            "summaryChars": 107,
-            "schemaChars": 336,
-            "propertiesCount": 8
+            "summaryChars": 144,
+            "schemaChars": 414,
+            "propertiesCount": 10
           },
           {
             "name": "subagents",
@@ -679,7 +660,7 @@
           },
           {
             "name": "web_search",
-            "summaryChars": 175,
+            "summaryChars": 109,
             "schemaChars": 753,
             "propertiesCount": 6
           },
@@ -697,7 +678,7 @@
           },
           {
             "name": "memory_search",
-            "summaryChars": 235,
+            "summaryChars": 334,
             "schemaChars": 139,
             "propertiesCount": 3
           },
@@ -709,6 +690,8 @@
           }
         ]
       }
-    }
+    },
+    "cacheRead": 26624,
+    "cacheWrite": 0
   }
 }

@@ -1,0 +1,74 @@
+name: Deploy to Staging
+
+on:
+  push:
+    tags:
+      - 'v*-rc*'  # Release candidates
+
+env:
+  NAMESPACE: unjai-staging
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: staging
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+    
+    - name: Set up kubectl
+      uses: azure/setup-kubectl@v3
+      with:
+        version: 'v1.28.0'
+    
+    - name: Configure kubectl
+      run: |
+        echo "${{ secrets.KUBE_CONFIG_STAGING }}" | base64 -d > kubeconfig
+        export KUBECONFIG=kubeconfig
+    
+    - name: Deploy to Kubernetes
+      run: |
+        export KUBECONFIG=kubeconfig
+        
+        # Create namespace if not exists
+        kubectl create namespace ${{ env.NAMESPACE }} --dry-run=client -o yaml | kubectl apply -f -
+        
+        # Update image tags
+        sed -i "s|image: nong-unjai/gateway:latest|image: ghcr.io/${{ github.repository }}/gateway:${{ github.ref_name }}|g" k8s/30-gateway.yaml
+        sed -i "s|image: nong-unjai/orchestrator:latest|image: ghcr.io/${{ github.repository }}/orchestrator:${{ github.ref_name }}|g" k8s/20-orchestrator.yaml
+        sed -i "s|image: nong-unjai/analytics:latest|image: ghcr.io/${{ github.repository }}/analytics:${{ github.ref_name }}|g" k8s/21-analytics.yaml
+        
+        # Apply configurations
+        kubectl apply -f k8s/00-namespace.yaml -n ${{ env.NAMESPACE }}
+        kubectl apply -f k8s/01-postgres.yaml -n ${{ env.NAMESPACE }}
+        kubectl apply -f k8s/02-redis.yaml -n ${{ env.NAMESPACE }}
+        kubectl apply -f k8s/10-configmap.yaml -n ${{ env.NAMESPACE }}
+        kubectl apply -f k8s/20-orchestrator.yaml -n ${{ env.NAMESPACE }}
+        kubectl apply -f k8s/21-analytics.yaml -n ${{ env.NAMESPACE }}
+        kubectl apply -f k8s/30-gateway.yaml -n ${{ env.NAMESPACE }}
+        
+        # Wait for rollout
+        kubectl rollout status deployment/gateway -n ${{ env.NAMESPACE }} --timeout=300s
+        kubectl rollout status deployment/orchestrator -n ${{ env.NAMESPACE }} --timeout=300s
+    
+    - name: Run smoke tests
+      run: |
+        export KUBECONFIG=kubeconfig
+        
+        # Get service endpoint
+        ENDPOINT=$(kubectl get svc gateway -n ${{ env.NAMESPACE }} -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
+        
+        # Health check
+        curl -f http://${ENDPOINT}:8000/health || exit 1
+        
+        echo "✅ Staging deployment successful"
+    
+    - name: Notify Slack
+      if: always()
+      uses: 8398a7/action-slack@v3
+      with:
+        status: ${{ job.status }}
+        fields: repo,message,commit,author,action,eventName,ref,workflow
+      env:
+        SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}

@@ -1,4 +1,14 @@
 {
+  "meta": {
+    "lastTouchedVersion": "2026.2.18",
+    "lastTouchedAt": "2026-02-19T14:31:51.601Z"
+  },
+  "wizard": {
+    "lastRunAt": "2026-02-19T07:09:46.616Z",
+    "lastRunVersion": "2026.2.18",
+    "lastRunCommand": "onboard",
+    "lastRunMode": "local"
+  },
   "auth": {
     "profiles": {
       "moonshot:default": {
@@ -10,8 +20,31 @@
   "models": {
     "mode": "merge",
     "providers": {
+      "nvidia": {
+        "baseUrl": "https://integrate.api.nvidia.com/v1",
+        "api": "openai-completions",
+        "models": [
+          {
+            "id": "moonshotai/kimi-k2.5",
+            "name": "Kimi K2.5 (NVIDIA)",
+            "reasoning": false,
+            "input": [
+              "text"
+            ],
+            "cost": {
+              "input": 0,
+              "output": 0,
+              "cacheRead": 0,
+              "cacheWrite": 0
+            },
+            "contextWindow": 200000,
+            "maxTokens": 8192
+          }
+        ]
+      },
       "moonshot": {
         "baseUrl": "https://api.moonshot.ai/v1",
+        "apiKey": "sk-lDiPVT2KoHm2aSc6xM5iseDmVV3fEI4sCunfX9zJqe8H8R7K",
         "api": "openai-completions",
         "models": [
           {
@@ -27,14 +60,54 @@
               "cacheRead": 0,
               "cacheWrite": 0
             },
-            "contextWindow": 256000,
+            "contextWindow": 131072,
             "maxTokens": 8192
+          }
+        ]
+      },
+      "openai": {
+        "baseUrl": "https://api.openai.com/v1",
+        "api": "openai-completions",
+        "models": [
+          {
+            "id": "gpt-4o",
+            "name": "GPT-4o",
+            "reasoning": false,
+            "input": [
+              "text",
+              "image"
+            ],
+            "cost": {
+              "input": 2.5,
+              "output": 10,
+              "cacheRead": 1.25,
+              "cacheWrite": 0
+            },
+            "contextWindow": 128000,
+            "maxTokens": 4096
           }
         ]
       }
     }
   },
   "agents": {
+    "list": [
+      {
+        "id": "main",
+        "default": true,
+        "workspace": "/home/node/.openclaw/workspace",
+        "model": {
+          "primary": "moonshot/kimi-k2.5"
+        }
+      },
+      {
+        "id": "unjai",
+        "workspace": "/home/node/.openclaw/workspace-unjai",
+        "model": {
+          "primary": "moonshot/kimi-k2.5"
+        }
+      }
+    ],
     "defaults": {
       "model": {
         "primary": "moonshot/kimi-k2.5"
@@ -42,6 +115,12 @@
       "models": {
         "moonshot/kimi-k2.5": {
           "alias": "Kimi"
+        },
+        "nvidia/moonshotai/kimi-k2.5": {
+          "alias": "Kimi (NVIDIA)"
+        },
+        "openai/gpt-4o": {
+          "alias": "GPT-4o"
         }
       },
       "workspace": "/home/node/.openclaw/workspace",
@@ -54,6 +133,20 @@
       }
     }
   },
+  "bindings": [
+    {
+      "agentId": "unjai", 
+      "match": { "channel": "telegram", "accountId": "bot3" } 
+    },
+    {
+      "agentId": "main", 
+      "match": { "channel": "telegram", "accountId": "bot1" }
+    },
+    {
+      "agentId": "main",
+      "match": { "channel": "telegram", "accountId": "bot2" }
+    }
+  ],
   "messages": {
     "ackReactionScope": "group-mentions"
   },
@@ -64,15 +157,64 @@
   "channels": {
     "telegram": {
       "enabled": true,
-      "dmPolicy": "pairing",
-      "groupPolicy": "allowlist",
-      "streamMode": "partial"
+      "accounts": {
+        "bot1": {
+          "enabled": true,
+          "botToken": "${TELEGRAM_BOT_TOKEN}",
+          "dmPolicy": "pairing",
+          "groupPolicy": "open",
+          "streamMode": "partial",
+          "actions": {
+            "reactions": true,
+            "sendMessage": true,
+            "sticker": true
+          }
+        },
+        "bot2": {
+          "enabled": true,
+          "botToken": "${TELEGRAM_BOT_TOKEN_2}",
+          "dmPolicy": "pairing",
+          "groupPolicy": "open",
+          "streamMode": "partial",
+          "actions": {
+            "reactions": true,
+            "sendMessage": true,
+            "sticker": true
+          }
+        },
+        "bot3": {
+          "enabled": true,
+          "botToken": "${TELEGRAM_BOT_TOKEN_3}",
+          "dmPolicy": "pairing",
+          "groupPolicy": "open",
+          "streamMode": "partial",
+          "actions": {
+            "reactions": true,
+            "sendMessage": true,
+            "sticker": true
+          }
+        }
+      }
     }
   },
   "gateway": {
     "port": 18789,
     "mode": "local",
-    "bind": "loopback",
+    "bind": "lan",
+    "http": {
+        "endpoints": {
+            "chatCompletions": {
+                "enabled": true
+            }
+        }
+    },
+    "controlUi": {
+      "dangerouslyDisableDeviceAuth": true,
+      "allowedOrigins": [
+        "http://136.110.50.115:18789",
+        "*"
+      ]
+    },
     "auth": {
       "mode": "token",
       "token": "a6dde5d95e9d63620fc83c5800400c11a1912d5fcb74fb8d"
@@ -98,9 +240,5 @@
         "enabled": true
       }
     }
-  },
-  "meta": {
-    "lastTouchedVersion": "2026.2.18",
-    "lastTouchedAt": "2026-02-19T07:08:48.173Z"
   }
 }

@@ -1,7 +1,7 @@
 {
   "meta": {
-    "lastTouchedVersion": "2026.2.18",
-    "lastTouchedAt": "2026-02-19T14:31:51.601Z"
+    "lastTouchedVersion": "2026.2.23",
+    "lastTouchedAt": "2026-03-03T04:25:38.189Z"
   },
   "wizard": {
     "lastRunAt": "2026-02-19T07:09:46.616Z",
@@ -91,23 +91,6 @@
     }
   },
   "agents": {
-    "list": [
-      {
-        "id": "main",
-        "default": true,
-        "workspace": "/home/node/.openclaw/workspace",
-        "model": {
-          "primary": "moonshot/kimi-k2.5"
-        }
-      },
-      {
-        "id": "unjai",
-        "workspace": "/home/node/.openclaw/workspace-unjai",
-        "model": {
-          "primary": "moonshot/kimi-k2.5"
-        }
-      }
-    ],
     "defaults": {
       "model": {
         "primary": "moonshot/kimi-k2.5"
@@ -131,7 +114,24 @@
       "subagents": {
         "maxConcurrent": 8
       }
-    }
+    },
+    "list": [
+      {
+        "id": "main",
+        "default": true,
+        "workspace": "/home/node/.openclaw/workspace",
+        "model": {
+          "primary": "moonshot/kimi-k2.5"
+        }
+      },
+      {
+        "id": "unjai",
+        "workspace": "/home/node/.openclaw/workspace-unjai",
+        "model": {
+          "primary": "moonshot/kimi-k2.5"
+        }
+      }
+    ]
   },
   "bindings": [
     {
@@ -140,6 +140,20 @@
         "channel": "telegram",
         "accountId": "bot3"
       }
+    },
+    {
+      "agentId": "main",
+      "match": {
+        "channel": "telegram",
+        "accountId": "bot1"
+      }
+    },
+    {
+      "agentId": "main",
+      "match": {
+        "channel": "telegram",
+        "accountId": "bot2"
+      }
     }
   ],
   "messages": {
@@ -147,18 +161,23 @@
   },
   "commands": {
     "native": "auto",
-    "nativeSkills": "auto"
+    "nativeSkills": "auto",
+    "restart": true,
+    "ownerDisplay": "raw"
   },
   "channels": {
     "telegram": {
       "enabled": true,
+      "dmPolicy": "pairing",
+      "groupPolicy": "allowlist",
+      "streaming": "off",
       "accounts": {
         "bot1": {
           "enabled": true,
-          "botToken": "${TELEGRAM_BOT_TOKEN}",
           "dmPolicy": "pairing",
-          "groupPolicy": "allowlist",
-          "streamMode": "partial",
+          "botToken": "${TELEGRAM_BOT_TOKEN}",
+          "groupPolicy": "open",
+          "streaming": "partial",
           "actions": {
             "reactions": true,
             "sendMessage": true,
@@ -167,10 +186,10 @@
         },
         "bot2": {
           "enabled": true,
-          "botToken": "${TELEGRAM_BOT_TOKEN_2}",
           "dmPolicy": "pairing",
-          "groupPolicy": "allowlist",
-          "streamMode": "partial",
+          "botToken": "${TELEGRAM_BOT_TOKEN_2}",
+          "groupPolicy": "open",
+          "streaming": "partial",
           "actions": {
             "reactions": true,
             "sendMessage": true,
@@ -179,10 +198,10 @@
         },
         "bot3": {
           "enabled": true,
-          "botToken": "${TELEGRAM_BOT_TOKEN_3}",
           "dmPolicy": "pairing",
-          "groupPolicy": "allowlist",
-          "streamMode": "partial",
+          "botToken": "${TELEGRAM_BOT_TOKEN_3}",
+          "groupPolicy": "open",
+          "streaming": "partial",
           "actions": {
             "reactions": true,
             "sendMessage": true,
@@ -197,11 +216,11 @@
     "mode": "local",
     "bind": "lan",
     "controlUi": {
-      "dangerouslyDisableDeviceAuth": true,
       "allowedOrigins": [
         "http://136.110.50.115:18789",
         "*"
-      ]
+      ],
+      "dangerouslyDisableDeviceAuth": true
     },
     "auth": {
       "mode": "token",
@@ -210,6 +229,13 @@
     "tailscale": {
       "mode": "off",
       "resetOnExit": false
+    },
+    "http": {
+      "endpoints": {
+        "chatCompletions": {
+          "enabled": true
+        }
+      }
     },
     "nodes": {
       "denyCommands": [
@@ -220,6 +246,13 @@
         "contacts.add",
         "reminders.add"
       ]
+    }
+  },
+  "skills": {
+    "entries": {
+      "nano-banana-pro": {
+        "apiKey": "AIzaSyB6y7Ybgci-BPhasbmK14zOH7AzjIEp5CE"
+      }
     }
   },
   "plugins": {

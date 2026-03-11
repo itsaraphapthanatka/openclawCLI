@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Construction AI MVP</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script src="https://unpkg.com/recharts/umd/Recharts.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>body { font-family: 'Inter', sans-serif; }</style>
+</head>
+<body>
+  <div id="root"></div>
+  <script type="text/babel">
+    const { useState, useEffect } = React;
+    const { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer } = Recharts;
+    
+    const mockForecast = [
+      { month: 'M1', predicted: 5.2 }, { month: 'M2', predicted: 6.5 },
+      { month: 'M3', predicted: 7.8 }, { month: 'M4', predicted: 9.1 },
+      { month: 'M5', predicted: 10.5 }, { month: 'M6', predicted: 11.8 },
+    ];
+    
+    const projects = [
+      { id: 'PROJ-001', name: 'คอนโด High-Rise สุขุมวิท', budget: 500, profit: 12.5, status: 'green', alerts: [] },
+      { id: 'PROJ-002', name: 'โรงงาน EEC ระยอง', budget: 800, profit: 8.2, status: 'yellow', alerts: ['ต้นทุนวัสดุเพิ่ม 5%'] },
+      { id: 'PROJ-003', name: 'โรงพยาบาลเชียงใหม่', budget: 1200, profit: 3.5, status: 'red', alerts: ['กำลังคนไม่พอ', 'Client จ่ายช้า'] }
+    ];
+    
+    function App() {
+      const [summary, setSummary] = useState(null);
+      const [activeTab, setActiveTab] = useState('dashboard');
+      
+      useEffect(() => {
+        fetch('http://localhost:3001/api/dashboard/summary')
+          .then(r => r.json())
+          .then(data => setSummary(data))
+          .catch(() => setSummary({
+            totalProjects: 3, activeProjects: 2, totalBudget: 2500000000, avgProfit: '8.1',
+            trafficLight: { green: 1, yellow: 1, red: 1 }
+          }));
+      }, []);
+      
+      if (!summary) return <div className="flex justify-center p-10">Loading...</div>;
+      
+      return (
+        <div className="min-h-screen bg-gray-100">
+          {/* Header */}
+          <header className="bg-white shadow-sm border-b">
+            <div className="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
+              <div className="flex items-center space-x-3">
+                <div className="h-10 w-10 bg-blue-600 rounded-lg flex items-center justify-center text-white font-bold text-xl">AI</div>
+                <div>
+                  <h1 className="text-xl font-bold text-gray-900">Construction Intelligence</h1>
+                  <p className="text-sm text-gray-500">ระบบ AI บริหารโครงการก่อสร้าง</p>
+                </div>
+              </div>
+              <div className="flex space-x-1 bg-gray-100 rounded-lg p-1">
+                {['dashboard', 'projects', 'ai', 'esg'].map(t => (
+                  <button key={t} onClick={() => setActiveTab(t)} 
+                    className={`px-4 py-2 rounded-md text-sm font-medium capitalize ${activeTab === t ? 'bg-white shadow text-blue-600' : 'text-gray-600 hover:text-gray-900'}`}>
+                    {t === 'dashboard' ? 'ภาพรวม' : t === 'projects' ? 'โครงการ' : t === 'ai' ? 'AI พยากรณ์' : 'ESG'}
+                  </button>
+                ))}
+              </div>
+            </div>
+          </header>
+          
+          <main className="max-w-7xl mx-auto px-4 py-6">
+            {/* Dashboard Tab */}
+            {activeTab === 'dashboard' && (
+              <div className="space-y-6">
+                {/* Traffic Lights */}
+                <div className="grid grid-cols-3 gap-4">
+                  <div className="bg-white rounded-xl shadow-sm p-6 border-l-4 border-green-500">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <p className="text-sm font-medium text-gray-600">โครงการปกติ</p>
+                        <p className="text-3xl font-bold text-green-600">{summary.trafficLight.green}</p>
+                      </div>
+                      <div className="h-12 w-12 bg-green-100 rounded-full flex items-center justify-center text-2xl">✓</div>
+                    </div>
+                  </div>
+                  <div className="bg-white rounded-xl shadow-sm p-6 border-l-4 border-yellow-500">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <p className="text-sm font-medium text-gray-600">ต้องติดตาม</p>
+                        <p className="text-3xl font-bold text-yellow-600">{summary.trafficLight.yellow}</p>
+                      </div>
+                      <div className="h-12 w-12 bg-yellow-100 rounded-full flex items-center justify-center text-2xl">⚠</div>
+                    </div>
+                  </div>
+                  <div className="bg-white rounded-xl shadow-sm p-6 border-l-4 border-red-500">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <p className="text-sm font-medium text-gray-600">ต้องเร่งด่วน</p>
+                        <p className="text-3xl font-bold text-red-600">{summary.trafficLight.red}</p>
+                      </div>
+                      <div className="h-12 w-12 bg-red-100 rounded-full flex items-center justify-center text-2xl">⚡</div>
+                    </div>
+                  </div>
+                </div>
+                
+                {/* Stats */}
+                <div className="grid grid-cols-4 gap-4">
+                  <div className="bg-white rounded-xl shadow-sm p-5">
+                    <p className="text-sm text-gray-500">โครงการทั้งหมด</p>
+                    <p className="text-2xl font-bold">{summary.totalProjects}</p>
+                  </div>
+                  <div className="bg-white rounded-xl shadow-sm p-5">
+                    <p className="text-sm text-gray-500">กำลังดำเนินการ</p>
+                    <p className="text-2xl font-bold">{summary.activeProjects}</p>
+                  </div>
+                  <div className="bg-white rounded-xl shadow-sm p-5">
+                    <p className="text-sm text-gray-500">งบประมาณ</p>
+                    <p className="text-2xl font-bold">{(summary.totalBudget/1e9).toFixed(1)}B</p>
+                  </div>
+                  <div className="bg-white rounded-xl shadow-sm p-5">
+                    <p className="text-sm text-gray-500">กำไรเฉลี่ย</p>
+                    <p className="text-2xl font-bold text-green-600">{summary.avgProfit}%</p>
+                  </div>
+                </div>
+                
+                {/* Chart */}
+                <div className="bg-white rounded-xl shadow-sm p-6">
+                  <h3 className="text-lg font-semibold mb-4">📈 AI Profit Forecast</h3>
+                  <div className="h-64">
+                    <ResponsiveContainer width="100%" height="100%">
+                      <LineChart data={mockForecast}>
+                        <XAxis dataKey="month" />
+                        <YAxis />
+                        <Tooltip />
+                        <Line type="monotone" dataKey="predicted" stroke="#3b82f6" strokeWidth={3} dot={{ fill: '#3b82f6' }} />
+                      </LineChart>
+                    </ResponsiveContainer>
+                  </div>
+                </div>
+              </div>
+            )}
+            
+            {/* Projects Tab */}
+            {activeTab === 'projects' && (
+              <div className="space-y-4">
+                {projects.map(p => (
+                  <div key={p.id} className="bg-white rounded-xl shadow-sm p-6">
+                    <div className="flex items-start justify-between">
+                      <div className="flex items-center space-x-4">
+                        <div className={`h-4 w-4 rounded-full ${p.status === 'green' ? 'bg-green-500' : p.status === 'yellow' ? 'bg-yellow-500' : 'bg-red-500'}`} />
+                        <div>
+                          <h3 className="font-semibold text-lg">{p.name}</h3>
+                          <p className="text-sm text-gray-500">{p.id} • งบประมาณ {p.budget} ล้านบาท</p>
+                        </div>
+                      </div>
+                      <div className="text-right">
+                        <p className="text-sm text-gray-500">กำไรที่คาดการณ์</p>
+                        <p className="text-xl font-bold text-green-600">{p.profit}%</p>
+                      </div>
+                    </div>
+                    {p.alerts.length > 0 && (
+                      <div className="mt-4 space-y-2">
+                        {p.alerts.map((a, i) => (
+                          <div key={i} className={`p-3 rounded-lg text-sm flex items-center space-x-2 ${p.status === 'red' ? 'bg-red-50 text-red-700' : 'bg-yellow-50 text-yellow-700'}`}>
+                            <span>⚠</span>
+                            <span>{a}</span>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
+            )}
+            
+            {/* AI Tab */}
+            {activeTab === 'ai' && (
+              <div className="space-y-6">
+                <div className="bg-gradient-to-r from-blue-600 to-purple-600 rounded-xl shadow-lg p-8 text-white">
+                  <h2 className="text-2xl font-bold mb-2">🤖 Pre-Project AI Scanner</h2>
+                  <p className="text-blue-100">วิเคราะห์ความเสี่ยงก่อนรับงานด้วย AI</p>
+                </div>
+                <div className="grid grid-cols-2 gap-6">
+                  <div className="bg-white rounded-xl shadow-sm p-6">
+                    <h3 className="font-semibold mb-4">ความแม่นยำของ AI</h3>
+                    <div className="flex items-center space-x-4">
+                      <div className="h-24 w-24 rounded-full bg-green-100 flex items-center justify-center">
+                        <span className="text-3xl font-bold text-green-600">88%</span>
+                      </div>
+                      <p className="text-sm text-gray-600">ความแม่นยำในการทำนายกำไร<br/>จากการทดสอบ 1,000+ โครงการ</p>
+                    </div>
+                  </div>
+                  <div className="bg-white rounded-xl shadow-sm p-6">
+                    <h3 className="font-semibold mb-4">ปัจจัยที่วิเคราะห์</h3>
+                    <ul className="space-y-2 text-sm">
+                      {['ประวัติลูกค้า', 'แนวโน้มต้นทุนวัสดุ', 'ความพร้อมแรงงาน', 'สภาพอากาศ/Seasonal'].map((item, i) => (
+                        <li key={i} className="flex items-center space-x-2"><div className="h-2 w-2 bg-blue-500 rounded-full"/><span>{item}</span></li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            )}
+            
+            {/* ESG Tab */}
+            {activeTab === 'esg' && (
+              <div className="space-y-6">
+                <div className="bg-gradient-to-r from-green-600 to-teal-600 rounded-xl shadow-lg p-8 text-white">
+                  <h2 className="text-2xl font-bold mb-2">🌱 ESG Dashboard</h2>
+                  <p className="text-green-100">ติดตามความยั่งยืนสำหรับรายงาน SET</p>
+                </div>
+                <div className="grid grid-cols-3 gap-4">
+                  <div className="bg-white rounded-xl shadow-sm p-6 text-center">
+                    <div className="h-12 w-12 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-3 text-2xl">🌿</div>
+                    <p className="text-3xl font-bold text-green-600">23</p>
+                    <p className="text-sm text-gray-600">ตันคาร์บอนลดได้</p>
+                  </div>
+                  <div className="bg-white rounded-xl shadow-sm p-6 text-center">
+                    <div className="h-12 w-12 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-3 text-2xl">🛡️</div>
+                    <p className="text-3xl font-bold text-blue-600">365</p>
+                    <p className="text-sm text-gray-600">วันไร้อุบัติเหตุ</p>
+                  </div>
+                  <div className="bg-white rounded-xl shadow-sm p-6 text-center">
+                    <div className="h-12 w-12 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-3 text-2xl">😊</div>
+                    <p className="text-3xl font-bold text-purple-600">4.5/5</p>
+                    <p className="text-sm text-gray-600">ความพึงพอใจพนักงาน</p>
+                  </div>
+                </div>
+              </div>
+            )}
+          </main>
+          
+          {/* Footer */}
+          <footer className="bg-white border-t mt-12">
+            <div className="max-w-7xl mx-auto px-4 py-6 text-center text-sm text-gray-500">
+              <p>Construction AI Platform • MVP Demo • ไข่เป็ด 🐣</p>
+            </div>
+          </footer>
+        </div>
+      );
+    }
+    
+    ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+  </script>
+</body>
+</html>
