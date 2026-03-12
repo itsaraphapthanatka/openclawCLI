@@ -116,3 +116,7 @@ dist/protocol.schema.json
 
 # Synthing
 **/.stfolder/
+
+# OpenClaw
+*.jsonl
+*.jsonl.lock
