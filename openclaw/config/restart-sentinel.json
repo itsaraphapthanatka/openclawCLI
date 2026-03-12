@@ -3,8 +3,8 @@
   "payload": {
     "kind": "update",
     "status": "skipped",
-    "ts": 1773210167892,
-    "sessionKey": "agent:unjai:telegram:group:-1003827699010",
+    "ts": 1773303144892,
+    "sessionKey": "agent:unjai:main",
     "message": null,
     "doctorHint": "Run: openclaw doctor --non-interactive",
     "stats": {
@@ -16,7 +16,7 @@
       "after": null,
       "steps": [],
       "reason": "not-git-install",
-      "durationMs": 931
+      "durationMs": 853
     }
   }
 }

@@ -96,9 +96,10 @@ class EmbeddingGenerator:
     Task: Generate embeddings for text content
     """
     
-    def __init__(self, api_key: Optional[str] = None, model: str = "text-embedding-3-small"):
+    def __init__(self, api_key: Optional[str] = None, model: str = "text-embedding-3-small", dimensions: int = 384):
         self.api_key = api_key or os.getenv("OPENAI_API_KEY")
         self.model = model
+        self.dimensions = dimensions  # Match Pinecone index dimension (384 for aunjai-knowledge)
         self.client = openai.OpenAI(api_key=self.api_key)
         
     @retry(stop=stop_after_attempt(3), wait=wait_exponential(multiplier=1, min=4, max=10))
@@ -110,7 +111,8 @@ class EmbeddingGenerator:
             
             response = self.client.embeddings.create(
                 model=self.model,
-                input=text
+                input=text,
+                dimensions=self.dimensions  # Truncate to match Pinecone index dimension
             )
             
             embedding = response.data[0].embedding
@@ -134,43 +136,45 @@ class VectorDatabase:
     """
     Agent: Search Specialist + Archivist
     Task: Manage Pinecone vector database operations
+    
+    Configuration (from environment variables):
+    - PINECONE_API_KEY: API key for Pinecone
+    - PINECONE_INDEX_NAME: Index name (default: aunjai-knowledge)
+    - PINECONE_INDEX_HOST: Index host URL
+    - PINECONE_NAMESPACE: Namespace for data (default: highlights)
     """
     
     def __init__(self, 
                  api_key: Optional[str] = None,
-                 environment: Optional[str] = None,
-                 index_name: str = "nong-unjai-knowledge",
-                 dimension: int = 1536):
+                 index_name: Optional[str] = None,
+                 index_host: Optional[str] = None,
+                 namespace: Optional[str] = None,
+                 dimension: int = 384):  # Match aunjai-knowledge index dimension
         self.api_key = api_key or os.getenv("PINECONE_API_KEY")
-        self.index_name = index_name
+        self.index_name = index_name or os.getenv("PINECONE_INDEX_NAME", "aunjai-knowledge")
+        self.index_host = index_host or os.getenv("PINECONE_INDEX_HOST", "https://aunjai-knowledge-3ygam8j.svc.aped-4627-b74a.pinecone.io")
+        self.namespace = namespace or os.getenv("PINECONE_NAMESPACE", "highlights")
         self.dimension = dimension
         
         # Initialize Pinecone
         self.pc = Pinecone(api_key=self.api_key)
-        self.index = self._get_or_create_index()
+        self.index = self._get_index_with_namespace()
         
-    def _get_or_create_index(self):
-        """Get existing index or create new one"""
+    def _get_index_with_namespace(self):
+        """Get existing index with namespace"""
         try:
-            # Check if index exists
-            if self.index_name not in [idx.name for idx in self.pc.list_indexes()]:
-                logger.info(f"Creating new index: {self.index_name}")
-                
-                self.pc.create_index(
-                    name=self.index_name,
-                    dimension=self.dimension,
-                    metric="cosine",
-                    spec=ServerlessSpec(
-                        cloud="aws",
-                        region="us-east-1"
-                    )
-                )
-            
-            return self.pc.Index(self.index_name)
+            # Connect to existing index using host
+            index = self.pc.Index(name=self.index_name, host=self.index_host)
+            logger.info(f"Connected to Pinecone index: {self.index_name} (namespace: {self.namespace})")
+            return index
             
         except Exception as e:
-            logger.error(f"Error initializing index: {e}")
+            logger.error(f"Error connecting to index: {e}")
             raise
+    
+    def _get_namespace_index(self):
+        """Get index scoped to namespace"""
+        return self.index
     
     def upsert_video(self, 
                      video_metadata: VideoMetadata,
@@ -207,16 +211,17 @@ class VectorDatabase:
                 "created_at": video_metadata.created_at.isoformat()
             }
             
-            # Upsert to Pinecone
+            # Upsert to Pinecone with namespace
             self.index.upsert(
                 vectors=[{
                     "id": vector_id,
                     "values": embedding,
                     "metadata": metadata
-                }]
+                }],
+                namespace=self.namespace
             )
             
-            logger.info(f"Upserted video: {vector_id}")
+            logger.info(f"Upserted video to namespace '{self.namespace}': {vector_id}")
             return True
             
         except Exception as e:
@@ -250,12 +255,13 @@ class VectorDatabase:
                 # We'll filter post-query or use metadata string matching
                 pass
             
-            # Query Pinecone
+            # Query Pinecone with namespace
             results = self.index.query(
                 vector=query_embedding,
                 top_k=top_k,
                 include_metadata=True,
-                filter=filter_dict if filter_dict else None
+                filter=filter_dict if filter_dict else None,
+                namespace=self.namespace
             )
             
             # Convert to SearchResult objects

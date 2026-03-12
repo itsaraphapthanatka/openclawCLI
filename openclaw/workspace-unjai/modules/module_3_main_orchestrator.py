@@ -26,6 +26,7 @@ import httpx
 
 from module_2_nlp_processor import NLPProcessor, NLPAnalysisResult
 from module_4_line_gateway import LineGateway, FlexMessageBuilder, UserSession
+from module_1_the_brain import VectorDatabase, EmbeddingGenerator, SearchResult
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
@@ -135,12 +136,16 @@ class MainOrchestrator:
         self.flex_builder = FlexMessageBuilder()
         self.http_client = httpx.AsyncClient(timeout=30.0)
         
+        # Initialize Knowledge Base (Module 1)
+        self.vector_db = VectorDatabase()
+        self.embedding_generator = EmbeddingGenerator(dimensions=384)
+        
         # Middleware callbacks (to be set)
         self.video_callback: Optional[Callable] = None
         self.quiz_callback: Optional[Callable] = None
         self.coin_callback: Optional[Callable] = None
         
-        logger.info("Main Orchestrator initialized")
+        logger.info("Main Orchestrator initialized with VectorDB connection")
     
     async def process_message(
         self,
@@ -472,21 +477,57 @@ class MainOrchestrator:
         context: WorkflowContext,
         query_type: str
     ) -> WorkflowContext:
-        """Search knowledge base"""
+        """Search knowledge base using Vector Database (Module 1)"""
         context.steps_executed.append(WorkflowStep.SEARCH_KNOWLEDGE.value)
         
         try:
-            # This would call Module 1 (Knowledge Base)
-            # For now, simulate results
-            context.knowledge_results = [
-                {
-                    "content": "พระเจ้าทรงรักโลก...",
-                    "source": "ยอห์น 3:16",
-                    "circle": context.recommended_circle
-                }
-            ]
+            # Generate embedding for the query
+            query_embedding = self.embedding_generator.generate(context.message)
+            
+            # Search in Pinecone Vector DB
+            from module_1_the_brain import CircleLevel
+            circle_filter = None
+            if context.recommended_circle == 1:
+                circle_filter = CircleLevel.SELF
+            elif context.recommended_circle == 2:
+                circle_filter = CircleLevel.CLOSE_ONES
+            elif context.recommended_circle == 3:
+                circle_filter = CircleLevel.SOCIETY
+            
+            search_results = self.vector_db.search(
+                query_embedding=query_embedding,
+                circle_level=circle_filter,
+                top_k=5
+            )
+            
+            # Convert SearchResult to knowledge_results format
+            knowledge_results = []
+            for result in search_results:
+                knowledge_results.append({
+                    "video_id": result.video_id,
+                    "title": result.metadata.title,
+                    "description": result.metadata.description,
+                    "transcript": result.metadata.summary[:200] + "..." if len(result.metadata.summary) > 200 else result.metadata.summary,
+                    "scripture_refs": result.metadata.scripture_refs,
+                    "circle": result.metadata.circle_level.value if hasattr(result.metadata.circle_level, 'value') else result.metadata.circle_level,
+                    "score": result.score,
+                    "tone": result.metadata.tone,
+                    "topic_tags": result.metadata.topic_tags
+                })
+            
+            context.knowledge_results = knowledge_results
+            
+            # If high similarity video found, set video_url
+            if search_results and search_results[0].score >= 0.70:
+                context.video_url = f"/static/clips/{search_results[0].video_id}.mp4"
+                context.scripture_found = bool(search_results[0].metadata.scripture_refs)
+            
+            logger.info(f"Knowledge search returned {len(knowledge_results)} results")
+            
         except Exception as e:
             logger.error(f"Error searching knowledge: {e}")
+            # Fallback to empty results
+            context.knowledge_results = []
         
         return context
     

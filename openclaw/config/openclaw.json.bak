@@ -1,7 +1,7 @@
 {
   "meta": {
     "lastTouchedVersion": "2026.2.23",
-    "lastTouchedAt": "2026-03-03T04:14:53.230Z"
+    "lastTouchedAt": "2026-03-03T04:25:38.189Z"
   },
   "wizard": {
     "lastRunAt": "2026-02-19T07:09:46.616Z",
@@ -209,6 +209,18 @@
           }
         }
       }
+    },
+    "line": {
+      "enabled": true,
+      "accounts": {
+        "bot-unjai": {
+          "enabled": true,
+          "channelId": "2009212204",
+          "channelSecret": "f485ef0d1a369e4f627d16b47689bc60",
+          "channelAccessToken": "ycrEHwo0452psUd2hr+80uCcIMDh+/MTTFMr9kFP37qt5EA9Z0AWQkWEitgvNreL1rs83D/nOFKW98lYc5PDXuEOY5yr1uQJ05n5iPUioF17NM7YHp+UrDPd7j4mXj9KU/b/k7mj7aJ16ifmeIWNigdB04t89/1O/w1cDnyilFU=",
+          "webhookPath": "/webhook/line"
+        }
+      }
     }
   },
   "gateway": {
@@ -218,6 +230,7 @@
     "controlUi": {
       "allowedOrigins": [
         "http://136.110.50.115:18789",
+        "https://nongaunjai.febradio.org",
         "*"
       ],
       "dangerouslyDisableDeviceAuth": true

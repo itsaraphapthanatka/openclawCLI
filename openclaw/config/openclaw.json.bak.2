@@ -1,7 +1,7 @@
 {
   "meta": {
     "lastTouchedVersion": "2026.2.23",
-    "lastTouchedAt": "2026-03-03T04:11:21.813Z"
+    "lastTouchedAt": "2026-03-03T04:12:07.473Z"
   },
   "wizard": {
     "lastRunAt": "2026-02-19T07:09:46.616Z",
@@ -170,45 +170,45 @@
       "enabled": true,
       "dmPolicy": "pairing",
       "groupPolicy": "allowlist",
+      "streaming": "off",
       "accounts": {
         "bot1": {
           "enabled": true,
           "dmPolicy": "pairing",
           "botToken": "${TELEGRAM_BOT_TOKEN}",
           "groupPolicy": "open",
+          "streaming": "partial",
           "actions": {
             "reactions": true,
             "sendMessage": true,
             "sticker": true
-          },
-          "streaming": "partial"
+          }
         },
         "bot2": {
           "enabled": true,
           "dmPolicy": "pairing",
           "botToken": "${TELEGRAM_BOT_TOKEN_2}",
           "groupPolicy": "open",
+          "streaming": "partial",
           "actions": {
             "reactions": true,
             "sendMessage": true,
             "sticker": true
-          },
-          "streaming": "partial"
+          }
         },
         "bot3": {
           "enabled": true,
           "dmPolicy": "pairing",
           "botToken": "${TELEGRAM_BOT_TOKEN_3}",
           "groupPolicy": "open",
+          "streaming": "partial",
           "actions": {
             "reactions": true,
             "sendMessage": true,
             "sticker": true
-          },
-          "streaming": "partial"
+          }
         }
-      },
-      "streaming": "off"
+      }
     }
   },
   "gateway": {

@@ -1,7 +1,7 @@
 {
   "meta": {
     "lastTouchedVersion": "2026.2.23",
-    "lastTouchedAt": "2026-03-03T04:25:38.189Z"
+    "lastTouchedAt": "2026-03-12T06:56:39.473Z"
   },
   "wizard": {
     "lastRunAt": "2026-02-19T07:09:46.616Z",
@@ -154,6 +154,13 @@
         "channel": "telegram",
         "accountId": "bot2"
       }
+    },
+    {
+      "agentId": "unjai",
+      "match": {
+        "channel": "line",
+        "accountId": "bot-unjai"
+      }
     }
   ],
   "messages": {
@@ -209,6 +216,19 @@
           }
         }
       }
+    },
+    "line": {
+      "enabled": true,
+      "accounts": {
+        "bot-unjai": {
+          "enabled": true,
+          "userPolicy": "open",
+          "channelId": "2009212204",
+          "channelSecret": "f485ef0d1a369e4f627d16b47689bc60",
+          "channelAccessToken": "ycrEHwo0452psUd2hr+80uCcIMDh+/MTTFMr9kFP37qt5EA9Z0AWQkWEitgvNreL1rs83D/nOFKW98lYc5PDXuEOY5yr1uQJ05n5iPUioF17NM7YHp+UrDPd7j4mXj9KU/b/k7mj7aJ16ifmeIWNigdB04t89/1O/w1cDnyilFU=",
+          "webhookPath": "/webhook/line"
+        }
+      }
     }
   },
   "gateway": {
@@ -218,6 +238,7 @@
     "controlUi": {
       "allowedOrigins": [
         "http://136.110.50.115:18789",
+        "https://nongaunjai.febradio.org",
         "*"
       ],
       "dangerouslyDisableDeviceAuth": true
@@ -258,6 +279,9 @@
   "plugins": {
     "entries": {
       "telegram": {
+        "enabled": true
+      },
+      "line": {
         "enabled": true
       }
     }
