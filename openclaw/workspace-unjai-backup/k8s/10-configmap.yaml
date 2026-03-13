@@ -1,0 +1,28 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: unjai-config
+  namespace: unjai
+data:
+  # Database
+  POSTGRES_HOST: "postgres"
+  POSTGRES_PORT: "5432"
+  POSTGRES_DB: "unjai"
+  POSTGRES_USER: "unjai"
+  
+  # Redis
+  REDIS_HOST: "redis"
+  REDIS_PORT: "6379"
+  
+  # Pinecone
+  PINECONE_INDEX_NAME: "unjai-knowledge"
+  PINECONE_ENVIRONMENT: "us-west1-gcp"
+  
+  # Middleware
+  MIDDLEWARE_URL: "http://middleware:8080"
+  
+  # Orchestrator
+  ORCHESTRATOR_URL: "http://orchestrator:8001"
+  
+  # Logging
+  LOG_LEVEL: "INFO"

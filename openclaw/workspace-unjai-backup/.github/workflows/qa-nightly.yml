@@ -1,0 +1,82 @@
+name: Nightly QA Tests
+
+on:
+  schedule:
+    - cron: '0 3 * * *'  # 3 AM daily
+  workflow_dispatch:  # Manual trigger
+
+jobs:
+  qa-tests:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+    
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+    
+    - name: Install dependencies
+      run: |
+        pip install -r requirements.txt
+    
+    - name: Run QA Test Suite
+      env:
+        PYTHONPATH: modules
+      run: |
+        python -c "
+import asyncio
+import sys
+import json
+from datetime import datetime
+
+sys.path.insert(0, 'modules')
+from module_10_auto_qa import AutoQATester
+
+async def run():
+    tester = AutoQATester()
+    report = await tester.run_all_tests()
+    
+    # Generate report
+    report_file = f'qa_report_{datetime.now().strftime(\"%Y%m%d\")}.json'
+    with open(report_file, 'w') as f:
+        json.dump(report.to_dict(), f, indent=2)
+    
+    print(f'Report saved: {report_file}')
+    
+    # Check threshold
+    if report.pass_rate < 95:
+        print(f'❌ QA Failed: {report.pass_rate:.1f}% (threshold: 95%)')
+        sys.exit(1)
+    
+    print(f'✅ QA Passed: {report.pass_rate:.1f}%')
+
+asyncio.run(run())
+        "
+    
+    - name: Upload QA Report
+      uses: actions/upload-artifact@v3
+      with:
+        name: qa-report
+        path: qa_report_*.json
+    
+    - name: Upload to S3 (optional)
+      if: always()
+      env:
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      run: |
+        # pip install awscli
+        # aws s3 cp qa_report_*.json s3://nong-unjai-reports/qa/
+        echo "S3 upload configured"
+    
+    - name: Notify on failure
+      if: failure()
+      uses: 8398a7/action-slack@v3
+      with:
+        status: ${{ job.status }}
+        text: '🚨 Nightly QA tests failed!'
+      env:
+        SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}

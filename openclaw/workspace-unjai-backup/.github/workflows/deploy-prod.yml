@@ -1,0 +1,98 @@
+name: Deploy to Production
+
+on:
+  push:
+    tags:
+      - 'v[0-9]+.[0-9]+.[0-9]+'  # Semantic versions only
+
+env:
+  NAMESPACE: unjai
+
+jobs:
+  approval:
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+    - name: Wait for approval
+      run: echo "Waiting for manual approval..."
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: approval
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+    
+    - name: Verify tag is valid
+      run: |
+        if [[ ! ${{ github.ref_name }} =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+          echo "Invalid version tag format"
+          exit 1
+        fi
+    
+    - name: Set up kubectl
+      uses: azure/setup-kubectl@v3
+      with:
+        version: 'v1.28.0'
+    
+    - name: Configure kubectl
+      run: |
+        echo "${{ secrets.KUBE_CONFIG_PRODUCTION }}" | base64 -d > kubeconfig
+        export KUBECONFIG=kubeconfig
+    
+    - name: Deploy to Kubernetes
+      run: |
+        export KUBECONFIG=kubeconfig
+        
+        # Update image tags with specific version
+        sed -i "s|image: nong-unjai/gateway:latest|image: ghcr.io/${{ github.repository }}/gateway:${{ github.ref_name }}|g" k8s/30-gateway.yaml
+        sed -i "s|image: nong-unjai/orchestrator:latest|image: ghcr.io/${{ github.repository }}/orchestrator:${{ github.ref_name }}|g" k8s/20-orchestrator.yaml
+        sed -i "s|image: nong-unjai/analytics:latest|image: ghcr.io/${{ github.repository }}/analytics:${{ github.ref_name }}|g" k8s/21-analytics.yaml
+        sed -i "s|image: nong-unjai/nudge:latest|image: ghcr.io/${{ github.repository }}/nudge:${{ github.ref_name }}|g" k8s/22-nudge.yaml
+        sed -i "s|image: nong-unjai/trends:latest|image: ghcr.io/${{ github.repository }}/trends:${{ github.ref_name }}|g" k8s/23-trends.yaml
+        
+        # Apply all configurations
+        kubectl apply -f k8s/ -n ${{ env.NAMESPACE }}
+        
+        # Wait for rollouts
+        kubectl rollout status deployment/gateway -n ${{ env.NAMESPACE }} --timeout=300s
+        kubectl rollout status deployment/orchestrator -n ${{ env.NAMESPACE }} --timeout=300s
+        kubectl rollout status deployment/analytics -n ${{ env.NAMESPACE }} --timeout=300s
+    
+    - name: Run production smoke tests
+      run: |
+        export KUBECONFIG=kubeconfig
+        
+        # Get external IP
+        ENDPOINT=$(kubectl get ingress unjai-ingress -n ${{ env.NAMESPACE }} -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
+        
+        # Health checks
+        curl -sf https://${ENDPOINT}/health || exit 1
+        curl -sf https://${ENDPOINT}/dashboard/health || exit 1
+        
+        echo "✅ Production deployment successful"
+    
+    - name: Create GitHub Release
+      uses: softprops/action-gh-release@v1
+      with:
+        name: Release ${{ github.ref_name }}
+        body: |
+          ## Changes
+          - Production deployment completed
+          - Image tag: ${{ github.ref_name }}
+          
+          ## Verification
+          - Health check: ✅
+          - Smoke tests: ✅
+        draft: false
+        prerelease: false
+    
+    - name: Notify Slack
+      if: always()
+      uses: 8398a7/action-slack@v3
+      with:
+        status: ${{ job.status }}
+        fields: repo,message,commit,author,action,eventName,ref,workflow
+      env:
+        SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}

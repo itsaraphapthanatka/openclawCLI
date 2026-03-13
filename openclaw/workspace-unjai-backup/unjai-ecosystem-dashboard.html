@@ -1,0 +1,796 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>น้องอุ่นใจ - Executive Strategic Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&family=Nunito+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --mint-primary: #A7F3D0;
+            --mint-light: #D1FAE5;
+            --mint-dark: #34D399;
+            --aqua: #67E8F9;
+            --teal: #5EEAD4;
+            --gold: #FBBF24;
+            --gold-light: #FDE68A;
+            --coral: #FB7185;
+            --soft-pink: #FBCFE8;
+            --lavender: #C4B5FD;
+            --white: #FFFFFF;
+            --bg-gradient: linear-gradient(135deg, #E0F7FA 0%, #E8F5E9 50%, #F3E5F5 100%);
+            --shadow-soft: 0 8px 32px rgba(0,0,0,0.08);
+            --shadow-card: 0 4px 20px rgba(0,0,0,0.06), 0 0 0 1px rgba(255,255,255,0.5) inset;
+            --glass-bg: rgba(255,255,255,0.85);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Kanit', 'Nunito Sans', sans-serif;
+            background: var(--bg-gradient);
+            min-height: 100vh;
+            padding: 24px;
+            color: #374151;
+        }
+
+        /* Header */
+        .dashboard-header {
+            text-align: center;
+            margin-bottom: 32px;
+            padding: 24px;
+            background: var(--glass-bg);
+            border-radius: 24px;
+            box-shadow: var(--shadow-soft);
+            backdrop-filter: blur(10px);
+        }
+
+        .dashboard-header h1 {
+            font-size: 2rem;
+            font-weight: 600;
+            background: linear-gradient(135deg, #059669, #0891B2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 8px;
+        }
+
+        .dashboard-header .subtitle {
+            color: #6B7280;
+            font-size: 1rem;
+        }
+
+        /* Grid Layout */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 1fr 1.2fr 1fr;
+            gap: 24px;
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+
+        /* Card Base */
+        .card {
+            background: var(--glass-bg);
+            border-radius: 20px;
+            padding: 24px;
+            box-shadow: var(--shadow-card);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.6);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 40px rgba(0,0,0,0.12);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 20px;
+            padding-bottom: 16px;
+            border-bottom: 2px solid var(--mint-light);
+        }
+
+        .card-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+
+        .card-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #1F2937;
+        }
+
+        /* User Growth Funnel */
+        .funnel-container {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .funnel-stage {
+            position: relative;
+            padding: 20px;
+            border-radius: 16px;
+            text-align: center;
+            transition: all 0.3s;
+        }
+
+        .funnel-stage:hover {
+            transform: scale(1.02);
+        }
+
+        .funnel-stage.open-space {
+            background: linear-gradient(135deg, #C4B5FD 0%, #A78BFA 100%);
+            clip-path: polygon(0 0, 100% 0, 95% 100%, 5% 100%);
+        }
+
+        .funnel-stage.study-corner {
+            background: linear-gradient(135deg, #67E8F9 0%, #22D3EE 100%);
+            clip-path: polygon(5% 0, 95% 0, 90% 100%, 10% 100%);
+            margin: 0 20px;
+        }
+
+        .funnel-stage.inner-circle {
+            background: linear-gradient(135deg, #FBBF24 0%, #F59E0B 100%);
+            clip-path: polygon(10% 0, 90% 0, 85% 100%, 15% 100%);
+            margin: 0 40px;
+        }
+
+        .funnel-avatars {
+            display: flex;
+            justify-content: center;
+            gap: -8px;
+            margin-bottom: 8px;
+        }
+
+        .avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            border: 3px solid rgba(255,255,255,0.5);
+            margin-left: -8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .avatar:first-child { margin-left: 0; }
+
+        .funnel-count {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: white;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .funnel-label {
+            font-size: 0.85rem;
+            color: rgba(255,255,255,0.95);
+            font-weight: 500;
+        }
+
+        .funnel-arrow {
+            text-align: center;
+            font-size: 24px;
+            color: var(--mint-dark);
+            margin: -8px 0;
+        }
+
+        .conversion-rate {
+            text-align: center;
+            padding: 16px;
+            background: linear-gradient(135deg, #D1FAE5 0%, #A7F3D0 100%);
+            border-radius: 16px;
+            margin-top: 16px;
+        }
+
+        .conversion-rate .value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #059669;
+        }
+
+        .conversion-rate .label {
+            font-size: 0.9rem;
+            color: #047857;
+        }
+
+        /* Economic Cards */
+        .economic-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .kpi-card {
+            background: linear-gradient(135deg, #FFFBEB 0%, #FEF3C7 100%);
+            border-radius: 16px;
+            padding: 20px;
+            border: 2px solid var(--gold-light);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .kpi-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, rgba(251,191,36,0.2) 0%, transparent 70%);
+        }
+
+        .kpi-icon {
+            font-size: 40px;
+            margin-bottom: 12px;
+        }
+
+        .kpi-value {
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: #B45309;
+            margin-bottom: 4px;
+        }
+
+        .kpi-label {
+            font-size: 0.85rem;
+            color: #92400E;
+            margin-bottom: 8px;
+        }
+
+        .kpi-growth {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            background: #10B981;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .blessing-pool {
+            background: linear-gradient(135deg, #E0F2FE 0%, #BAE6FD 100%);
+            border: 2px solid #7DD3FC;
+            margin-top: 16px;
+            padding: 24px;
+            border-radius: 16px;
+            text-align: center;
+        }
+
+        .blessing-pool .icon {
+            font-size: 48px;
+            margin-bottom: 12px;
+        }
+
+        .blessing-pool .amount {
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: #0369A1;
+        }
+
+        .blessing-pool .label {
+            font-size: 1rem;
+            color: #0C4A6E;
+            margin-top: 4px;
+        }
+
+        /* Safety Section */
+        .safety-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .safety-card {
+            background: linear-gradient(135deg, #FEE2E2 0%, #FECACA 100%);
+            border-radius: 16px;
+            padding: 20px;
+            border: 2px solid #FCA5A5;
+        }
+
+        .safety-card.safe {
+            background: linear-gradient(135deg, #D1FAE5 0%, #A7F3D0 100%);
+            border-color: #6EE7B7;
+        }
+
+        .gauge-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .gauge {
+            width: 100px;
+            height: 50px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .gauge-bg {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            border: 12px solid rgba(255,255,255,0.5);
+            border-top-color: #EF4444;
+            transform: rotate(-45deg);
+        }
+
+        .gauge-value {
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #DC2626;
+        }
+
+        .safety-title {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #991B1B;
+            text-align: center;
+            margin-bottom: 8px;
+        }
+
+        .safety-card.safe .safety-title {
+            color: #065F46;
+        }
+
+        .success-rate {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            background: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: 600;
+            color: #059669;
+        }
+
+        /* Mood Chart */
+        .mood-chart {
+            height: 120px;
+            position: relative;
+            margin: 16px 0;
+        }
+
+        .mood-svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        .mood-markers {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 8px;
+            padding: 0 8px;
+        }
+
+        .mood-marker {
+            font-size: 20px;
+        }
+
+        .mood-summary {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            background: linear-gradient(135deg, #D1FAE5 0%, #A7F3D0 100%);
+            padding: 12px;
+            border-radius: 12px;
+            margin-top: 12px;
+        }
+
+        .mood-summary .percent {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #059669;
+        }
+
+        .mood-summary .label {
+            font-size: 0.9rem;
+            color: #047857;
+        }
+
+        /* Map Section */
+        .map-container {
+            position: relative;
+            height: 300px;
+            background: linear-gradient(135deg, #E0F7FA 0%, #B2EBF2 100%);
+            border-radius: 16px;
+            overflow: hidden;
+            margin-bottom: 16px;
+        }
+
+        .map-thailand {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .thailand-svg {
+            width: 90%;
+            height: 90%;
+            opacity: 0.6;
+        }
+
+        .map-legend {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            margin-bottom: 16px;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.85rem;
+            color: #4B5563;
+        }
+
+        .legend-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+        }
+
+        .legend-dot.high { background: #10B981; }
+        .legend-dot.medium { background: #FBBF24; }
+        .legend-dot.low { background: #9CA3AF; }
+
+        .active-zones {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            background: linear-gradient(135deg, #D1FAE5 0%, #A7F3D0 100%);
+            padding: 16px;
+            border-radius: 12px;
+        }
+
+        .active-zones .icon {
+            font-size: 28px;
+        }
+
+        .active-zones .count {
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: #059669;
+        }
+
+        .active-zones .label {
+            font-size: 0.9rem;
+            color: #047857;
+        }
+
+        /* Responsive */
+        @media (max-width: 1200px) {
+            .dashboard-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .economic-grid,
+            .safety-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Sparkline */
+        .sparkline {
+            display: flex;
+            align-items: flex-end;
+            gap: 3px;
+            height: 40px;
+            margin-top: 12px;
+        }
+
+        .spark-bar {
+            flex: 1;
+            background: linear-gradient(to top, #FCA5A5, #FECACA);
+            border-radius: 2px 2px 0 0;
+            min-height: 4px;
+        }
+
+        .spark-bar.good {
+            background: linear-gradient(to top, #6EE7B7, #A7F3D0);
+        }
+
+        /* Hub volunteers */
+        .volunteer-avatars {
+            display: flex;
+            justify-content: center;
+            margin-top: 12px;
+        }
+
+        .volunteer-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            border: 2px solid #FBBF24;
+            margin-left: -10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .volunteer-avatar:first-child { margin-left: 0; }
+        .volunteer-avatar.more {
+            background: #FBBF24;
+            color: white;
+            font-weight: 600;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+    <header class="dashboard-header">
+        <h1>🌟 ระบบนิเวศน์น้องอุ่นใจ - Ecosystem Health Dashboard</h1>
+        <p class="subtitle">ภาพรวมสุขภาพระบบและการตัดสินใจเชิงกลยุทธ์ | ณ วันที่ <span id="currentDate"></span></p>
+    </header>
+
+    <main class="dashboard-grid">
+        <!-- Left Column: User Growth & Funnel -->
+        <section class="card">
+            <div class="card-header">
+                <div class="card-icon" style="background: linear-gradient(135deg, #C4B5FD, #A78BFA);">👥</div>
+                <h2 class="card-title">User Growth & Funnel Journey</h2>
+            </div>
+            
+            <div class="funnel-container">
+                <div class="funnel-stage open-space">
+                    <div class="funnel-avatars">
+                        <span class="avatar">👤</span>
+                        <span class="avatar">👤</span>
+                        <span class="avatar">👤</span>
+                        <span class="avatar">+</span>
+                    </div>
+                    <div class="funnel-count">12,450</div>
+                    <div class="funnel-label">Open Space - คนแปลกหน้า</div>
+                </div>
+                
+                <div class="funnel-arrow">▼</div>
+                
+                <div class="funnel-stage study-corner">
+                    <div class="funnel-avatars">
+                        <span class="avatar">📖</span>
+                        <span class="avatar">📖</span>
+                        <span class="avatar">+</span>
+                    </div>
+                    <div class="funnel-count">5,280</div>
+                    <div class="funnel-label">Study Corner - ผู้เริ่มเติบโต</div>
+                </div>
+                
+                <div class="funnel-arrow">▼</div>
+                
+                <div class="funnel-stage inner-circle">
+                    <div class="funnel-avatars">
+                        <span class="avatar">🤝</span>
+                        <span class="avatar">🤝</span>
+                    </div>
+                    <div class="funnel-count">2,156</div>
+                    <div class="funnel-label">Inner Circle - ครอบครัวอาสา</div>
+                </div>
+            </div>
+            
+            <div class="conversion-rate">
+                <div class="value">17.3%</div>
+                <div class="label">Conversion Rate (จากแปลกหน้า → ครอบครัว)</div>
+            </div>
+        </section>
+
+        <!-- Center Column: Economic Health & Safety -->
+        <section style="display: flex; flex-direction: column; gap: 24px;">
+            <!-- Economic Health -->
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-icon" style="background: linear-gradient(135deg, #FDE68A, #FBBF24);">💰</div>
+                    <h2 class="card-title">Economic Health - สุขภาพเศรษฐกิจ</h2>
+                </div>
+                
+                <div class="economic-grid">
+                    <div class="kpi-card">
+                        <div class="kpi-icon">🪙</div>
+                        <div class="kpi-value">2.45M</div>
+                        <div class="kpi-label">เหรียญหมุนเวียนในระบบ</div>
+                        <span class="kpi-growth">▲ +23%</span>
+                    </div>
+                    
+                    <div class="kpi-card">
+                        <div class="kpi-icon">🎫</div>
+                        <div class="kpi-value">856K</div>
+                        <div class="kpi-label">Token ที่ใช้งานอยู่</div>
+                        <span class="kpi-growth">▲ +18%</span>
+                    </div>
+                </div>
+                
+                <div class="blessing-pool">
+                    <div class="icon">💎</div>
+                    <div class="amount">฿ 1,250,000</div>
+                    <div class="label">The Blessing Pool - ยอดสนับสนุนจาก Sponsors</div>
+                    <span class="kpi-growth" style="margin-top: 12px;">▲ +45% จากเดือนที่แล้ว</span>
+                </div>
+            </div>
+
+            <!-- Safety & Sentiment -->
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-icon" style="background: linear-gradient(135deg, #FECACA, #FCA5A5);">🛡️</div>
+                    <h2 class="card-title">Safety Net & Sentiment Monitoring</h2>
+                </div>
+                
+                <div class="safety-grid">
+                    <div class="safety-card">
+                        <div class="safety-title">SOS Cases Detected</div>
+                        <div class="gauge-container">
+                            <div class="gauge">
+                                <div class="gauge-bg"></div>
+                                <div class="gauge-value">12</div>
+                            </div>
+                        </div>
+                        <div class="sparkline">
+                            <div class="spark-bar" style="height: 30%"></div>
+                            <div class="spark-bar" style="height: 45%"></div>
+                            <div class="spark-bar" style="height: 25%"></div>
+                            <div class="spark-bar" style="height: 60%"></div>
+                            <div class="spark-bar" style="height: 40%"></div>
+                            <div class="spark-bar" style="height: 35%"></div>
+                            <div class="spark-bar" style="height: 50%"></div>
+                        </div>
+                        <div class="success-rate" style="margin-top: 12px;">
+                            ✅ 92% Success Rate
+                        </div>
+                    </div>
+                    
+                    <div class="safety-card safe">
+                        <div class="safety-title" style="color: #065F46;">Overall Mood</div>
+                        <div class="mood-chart">
+                            <svg class="mood-svg" viewBox="0 0 200 100" preserveAspectRatio="none">
+                                <defs>
+                                    <linearGradient id="moodGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                                        <stop offset="0%" style="stop-color:#34D399;stop-opacity:0.6" />
+                                        <stop offset="100%" style="stop-color:#34D399;stop-opacity:0.1" />
+                                    </linearGradient>
+                                </defs>
+                                <path d="M0,60 Q25,40 50,55 T100,35 T150,45 T200,30 L200,100 L0,100 Z" fill="url(#moodGradient)" />
+                                <path d="M0,60 Q25,40 50,55 T100,35 T150,45 T200,30" fill="none" stroke="#10B981" stroke-width="3" />
+                            </svg>
+                        </div>
+                        <div class="mood-markers">
+                            <span class="mood-marker">😔</span>
+                            <span class="mood-marker">😐</span>
+                            <span class="mood-marker">🙂</span>
+                            <span class="mood-marker">😊</span>
+                            <span class="mood-marker">🥰</span>
+                        </div>
+                        <div class="mood-summary">
+                            <span class="percent">+72%</span>
+                            <span class="label">Positive Sentiment</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Right Column: Geographic Map -->
+        <section class="card">
+            <div class="card-header">
+                <div class="card-icon" style="background: linear-gradient(135deg, #67E8F9, #22D3EE);">🗺️</div>
+                <h2 class="card-title">Geographic Impact - การกระจายตัว 77 จังหวัด</h2>
+            </div>
+            
+            <div class="map-container">
+                <div class="map-thailand">
+                    <svg class="thailand-svg" viewBox="0 0 200 300">
+                        <!-- Simplified Thailand map shape -->
+                        <path d="M80,20 Q90,15 100,20 L110,25 Q120,30 115,40 L110,50 Q115,60 120,70 L125,80 Q130,90 125,100 L120,110 Q125,120 130,130 L135,140 Q140,150 135,160 L130,170 Q135,180 140,190 L145,200 Q150,210 145,220 L140,230 Q145,240 140,250 L135,260 Q130,270 125,280" 
+                              fill="none" stroke="#0E7490" stroke-width="2" stroke-linecap="round"/>
+                        <path d="M100,20 Q95,30 90,40 L85,50 Q80,60 85,70 L90,80 Q85,90 80,100 L75,110 Q70,120 75,130 L80,140 Q75,150 70,160 L65,170 Q60,180 65,190 L70,200 Q65,210 60,220 L55,230 Q50,240 55,250 L60,260" 
+                              fill="none" stroke="#0E7490" stroke-width="2" stroke-linecap="round"/>
+                        
+                        <!-- Province dots -->
+                        <circle cx="95" cy="35" r="4" fill="#10B981" />
+                        <circle cx="105" cy="55" r="4" fill="#10B981" />
+                        <circle cx="100" cy="75" r="4" fill="#FBBF24" />
+                        <circle cx="110" cy="95" r="4" fill="#10B981" />
+                        <circle cx="95" cy="115" r="4" fill="#10B981" />
+                        <circle cx="105" cy="135" r="4" fill="#FBBF24" />
+                        <circle cx="100" cy="155" r="4" fill="#10B981" />
+                        <circle cx="115" cy="175" r="4" fill="#10B981" />
+                        <circle cx="95" cy="195" r="4" fill="#9CA3AF" />
+                        <circle cx="110" cy="215" r="4" fill="#10B981" />
+                        <circle cx="100" cy="235" r="4" fill="#FBBF24" />
+                        <circle cx="120" cy="255" r="4" fill="#10B981" />
+                        
+                        <!-- Connection lines from hub -->
+                        <line x1="140" y1="280" x2="95" y2="35" stroke="#67E8F9" stroke-width="1" opacity="0.5"/>
+                        <line x1="140" y1="280" x2="110" y2="95" stroke="#67E8F9" stroke-width="1" opacity="0.5"/>
+                        <line x1="140" y1="280" x2="100" y2="155" stroke="#67E8F9" stroke-width="1" opacity="0.5"/>
+                        <line x1="140" y1="280" x2="110" y2="215" stroke="#67E8F9" stroke-width="1" opacity="0.5"/>
+                    </svg>
+                </div>
+                
+                <!-- Hub indicator -->
+                <div style="position: absolute; bottom: 20px; right: 20px; text-align: center;">
+                    <div style="width: 50px; height: 50px; background: linear-gradient(135deg, #FBBF24, #F59E0B); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 24px; box-shadow: 0 4px 12px rgba(251,191,36,0.4);">
+                        🏠
+                    </div>
+                    <div style="font-size: 0.7rem; color: #6B7280; margin-top: 4px;">Hub</div>
+                </div>
+            </div>
+            
+            <div class="map-legend">
+                <div class="legend-item">
+                    <div class="legend-dot high"></div>
+                    <span>High Activity</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-dot medium"></div>
+                    <span>Medium</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-dot low"></div>
+                    <span>Growing</span>
+                </div>
+            </div>
+            
+            <div class="active-zones">
+                <span class="icon">✅</span>
+                <span class="count">77/77</span>
+                <span class="label">Provinces Active<br>ครอบคลุมทั่วประเทศ</span>
+            </div>
+            
+            <div style="margin-top: 16px; padding: 16px; background: linear-gradient(135deg, #FEF3C7 0%, #FDE68A 100%); border-radius: 12px; text-align: center;">
+                <div style="font-size: 0.9rem; color: #92400E; margin-bottom: 8px;">👥 อาสาสมัครที่พร้อมช่วยเหลือ</div>
+                <div class="volunteer-avatars">
+                    <span class="volunteer-avatar">👨</span>
+                    <span class="volunteer-avatar">👩</span>
+                    <span class="volunteer-avatar">👨</span>
+                    <span class="volunteer-avatar">👩</span>
+                    <span class="volunteer-avatar more">+247</span>
+                </div>
+                <div style="font-size: 1.2rem; font-weight: 700; color: #B45309; margin-top: 8px;">251 อาสา</div>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        // Set current date
+        const dateOptions = { year: 'numeric', month: 'long', day: 'numeric' };
+        document.getElementById('currentDate').textContent = new Date().toLocaleDateString('th-TH', dateOptions);
+    </script>
+</body>
+</html>

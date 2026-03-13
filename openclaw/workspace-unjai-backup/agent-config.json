@@ -1,0 +1,39 @@
+{
+  "allowAny": true,
+  "agents": [
+    "unjai",
+    "search_specialist",
+    "archivist"
+  ],
+  "description": "Nong Unjai Swarm Agent Configuration",
+  "version": "1.0.0",
+  "updated_at": "2026-03-11T11:25:00Z",
+  "settings": {
+    "unjai": {
+      "role": "Master Orchestrator",
+      "enabled": true,
+      "priority": 1
+    },
+    "search_specialist": {
+      "role": "Knowledge Retrieval",
+      "enabled": true,
+      "priority": 2,
+      "pinecone": {
+        "index": "aunjai-knowledge",
+        "namespace": "highlights",
+        "base_url": "https://nongaunjai.febradio.org"
+      }
+    },
+    "archivist": {
+      "role": "Data Management",
+      "enabled": true,
+      "priority": 3
+    }
+  },
+  "permissions": {
+    "can_spawn_agents": true,
+    "can_delegate_tasks": true,
+    "can_access_memory": true,
+    "can_modify_config": false
+  }
+}

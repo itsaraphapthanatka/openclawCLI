@@ -1,0 +1,42 @@
+version: '3.8'
+
+services:
+  # ==========================================
+  # Simplified LINE Gateway (No Swarm)
+  # ==========================================
+  line-gateway:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.simple
+    container_name: unjai-gateway-simple
+    restart: unless-stopped
+    env_file:
+      - .env
+    environment:
+      # Server config
+      HOST: 0.0.0.0
+      PORT: 8000
+      # Ensure these are set from .env
+      LINE_CHANNEL_SECRET: ${LINE_CHANNEL_SECRET}
+      LINE_CHANNEL_ACCESS_TOKEN: ${LINE_CHANNEL_ACCESS_TOKEN}
+      PINECONE_API_KEY: ${PINECONE_API_KEY}
+      PINECONE_INDEX_HOST: ${PINECONE_INDEX_HOST}
+      PINECONE_NAMESPACE: ${PINECONE_NAMESPACE:-highlights}
+      BASE_URL: ${BASE_URL:-https://nongaunjai.febradio.org}
+      OPENAI_API_KEY: ${OPENAI_API_KEY}
+    ports:
+      - "8000:8000"
+    networks:
+      - unjai-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+# ==========================================
+# Networks
+# ==========================================
+networks:
+  unjai-network:
+    driver: bridge

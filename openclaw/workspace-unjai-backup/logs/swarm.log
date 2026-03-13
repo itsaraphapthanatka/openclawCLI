@@ -1,0 +1,79 @@
+2026-03-12 02:49:25,413 | SwarmActivator | INFO | ============================================================
+2026-03-12 02:49:25,413 | SwarmActivator | INFO | 🚀 ACTIVATING NONG UNJAI SWARM (15 AGENTS)
+2026-03-12 02:49:25,413 | SwarmActivator | INFO | ============================================================
+2026-03-12 02:49:25,413 | SwarmActivator | INFO | 
+📦 Activating batch: Archivist Agent, Search Specialist
+2026-03-12 02:49:25,455 | modules.pinecone_connector | INFO | 🔌 PineconeConnector initialized
+2026-03-12 02:49:25,456 | modules.pinecone_connector | INFO |    Host: https://aunjai-knowledge-3ygam8j.svc.aped-4627-b74a.pinecone.io
+2026-03-12 02:49:25,456 | modules.pinecone_connector | INFO |    Namespace: highlights
+2026-03-12 02:49:25,456 | modules.pinecone_connector | INFO |    Base URL: https://nongaunjai.febradio.org
+2026-03-12 02:49:25,456 | SwarmActivator | INFO |     🔍 Search Specialist: Pinecone connector ready
+2026-03-12 02:49:25,456 | SwarmActivator | INFO |   ✅ Search Specialist: Active
+2026-03-12 02:49:25,514 | SwarmActivator | INFO |   ✅ Archivist Agent: Active
+2026-03-12 02:49:25,514 | SwarmActivator | INFO | 
+📦 Activating batch: Journey Architect, Sentinel Agent
+2026-03-12 02:49:25,515 | SwarmActivator | INFO |     🎯 Journey Architect: Config files validated
+2026-03-12 02:49:25,515 | SwarmActivator | INFO |   ✅ Journey Architect: Active
+2026-03-12 02:49:25,515 | SwarmActivator | INFO |     🛡️  Sentinel: Safety monitoring active
+2026-03-12 02:49:25,515 | SwarmActivator | INFO |   ✅ Sentinel Agent: Active
+2026-03-12 02:49:25,515 | SwarmActivator | INFO | 
+📦 Activating batch: Front-Desk Agent, Academy Specialist
+2026-03-12 02:49:25,515 | SwarmActivator | WARNING |     ⚠️  Front-Desk: LINE_CHANNEL_ACCESS_TOKEN not set
+2026-03-12 02:49:25,515 | SwarmActivator | INFO |     🎙️  Front-Desk: Personas loaded (12 modes)
+2026-03-12 02:49:25,515 | SwarmActivator | INFO |   ✅ Front-Desk Agent: Active
+2026-03-12 02:49:25,616 | SwarmActivator | INFO |   ✅ Academy Specialist: Active
+2026-03-12 02:49:25,616 | SwarmActivator | INFO | 
+📦 Activating batch: Media Delivery Agent, Persona & Truth Auditor
+2026-03-12 02:49:25,716 | SwarmActivator | INFO |   ✅ Media Delivery Agent: Active
+2026-03-12 02:49:25,717 | SwarmActivator | INFO |   ✅ Persona & Truth Auditor: Active
+2026-03-12 02:49:25,717 | SwarmActivator | INFO | 
+📦 Activating batch: Reward Manager, MAAC Sync Agent, Insights Analyst, Trend Predictor, Local Connector
+2026-03-12 02:49:25,717 | SwarmActivator | INFO |     📊 MAAC Sync: User profile system ready
+2026-03-12 02:49:25,717 | SwarmActivator | INFO |   ✅ MAAC Sync Agent: Active
+2026-03-12 02:49:25,817 | SwarmActivator | INFO |   ✅ Reward Manager: Active
+2026-03-12 02:49:25,818 | SwarmActivator | INFO |   ✅ Insights Analyst: Active
+2026-03-12 02:49:25,818 | SwarmActivator | INFO |   ✅ Trend Predictor: Active
+2026-03-12 02:49:25,818 | SwarmActivator | INFO |   ✅ Local Connector: Active
+2026-03-12 02:49:25,818 | SwarmActivator | INFO | 
+📦 Activating batch: System Tuner Agent, Auto-QA Tester
+2026-03-12 02:49:25,918 | SwarmActivator | INFO |   ✅ System Tuner Agent: Active
+2026-03-12 02:49:25,918 | SwarmActivator | INFO |   ✅ Auto-QA Tester: Active
+2026-03-12 02:49:25,918 | SwarmActivator | INFO | 
+============================================================
+2026-03-12 02:49:25,919 | SwarmActivator | INFO | 📊 SWARM STATUS REPORT
+2026-03-12 02:49:25,919 | SwarmActivator | INFO | ============================================================
+2026-03-12 02:49:25,919 | SwarmActivator | INFO | 
+Squad 1: Knowledge
+2026-03-12 02:49:25,919 | SwarmActivator | INFO |   ✅ Archivist Agent: active
+2026-03-12 02:49:25,919 | SwarmActivator | INFO |   ✅ Search Specialist: active
+2026-03-12 02:49:25,919 | SwarmActivator | INFO | 
+Squad 2: Strategy
+2026-03-12 02:49:25,919 | SwarmActivator | INFO |   ✅ Journey Architect: active
+2026-03-12 02:49:25,919 | SwarmActivator | INFO |   ✅ Sentinel Agent: active
+2026-03-12 02:49:25,919 | SwarmActivator | INFO | 
+Squad 3: Front-Desk
+2026-03-12 02:49:25,919 | SwarmActivator | INFO |   ✅ Front-Desk Agent: active
+2026-03-12 02:49:25,919 | SwarmActivator | INFO |   ✅ Academy Specialist: active
+2026-03-12 02:49:25,919 | SwarmActivator | INFO | 
+Squad 4: Delivery
+2026-03-12 02:49:25,919 | SwarmActivator | INFO |   ✅ Media Delivery Agent: active
+2026-03-12 02:49:25,919 | SwarmActivator | INFO |   ✅ Persona & Truth Auditor: active
+2026-03-12 02:49:25,919 | SwarmActivator | INFO | 
+Squad 5: Growth
+2026-03-12 02:49:25,919 | SwarmActivator | INFO |   ✅ Reward Manager: active
+2026-03-12 02:49:25,919 | SwarmActivator | INFO |   ✅ MAAC Sync Agent: active
+2026-03-12 02:49:25,920 | SwarmActivator | INFO |   ✅ Insights Analyst: active
+2026-03-12 02:49:25,920 | SwarmActivator | INFO |   ✅ Trend Predictor: active
+2026-03-12 02:49:25,920 | SwarmActivator | INFO |   ✅ Local Connector: active
+2026-03-12 02:49:25,920 | SwarmActivator | INFO | 
+Squad 6: Evolution
+2026-03-12 02:49:25,920 | SwarmActivator | INFO |   ✅ System Tuner Agent: active
+2026-03-12 02:49:25,920 | SwarmActivator | INFO |   ✅ Auto-QA Tester: active
+2026-03-12 02:49:25,920 | SwarmActivator | INFO | 
+✅ Swarm Activation Complete: 15/15 agents active
+2026-03-12 02:49:25,920 | SwarmActivator | INFO | 🔍 Search Specialist: Initialized
+2026-03-12 02:49:25,920 | SwarmActivator | INFO | 🔍 Search Specialist: Searching for 'การให้อภัย...'
+2026-03-12 02:49:26,905 | modules.pinecone_connector | INFO | ✅ Generated embedding (384 dimensions)
+2026-03-12 02:49:26,906 | modules.pinecone_connector | INFO | 🔍 Searching Pinecone (top_k=3, min_score=0.7)
+2026-03-12 02:49:27,887 | modules.pinecone_connector | INFO | ✅ Found 0 valid video highlights
+2026-03-12 02:49:27,887 | SwarmActivator | INFO | ✅ Search Specialist: Found 0 videos

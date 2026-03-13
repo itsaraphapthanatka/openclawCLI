@@ -166,6 +166,9 @@
   "messages": {
     "ackReactionScope": "group-mentions"
   },
+  "session": {
+    "dmScope": "per-account-channel-peer"
+  },
   "commands": {
     "native": "auto",
     "nativeSkills": "auto",
@@ -283,7 +286,13 @@
       },
       "line": {
         "enabled": true
+      },
+      "memory-core": {
+        "enabled": true
       }
+    },
+    "slots": {
+      "memory": "memory-core"
     }
   }
 }

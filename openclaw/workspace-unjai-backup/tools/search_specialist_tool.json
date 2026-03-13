@@ -1,0 +1,75 @@
+{
+  "name": "search_specialist_tool",
+  "version": "2.0.0",
+  "description": "🔍 Search Specialist Auto-Tool v2.0 - Hybrid Parallel Search ตาม AGENTS.md อย่างเคร่งครัด",
+  "agent": "search_specialist",
+  "role": "นักสืบค้นหาความหมาย (Parallel Retriever)",
+  "capabilities": [
+    "hybrid_parallel_search",
+    "memory_md_search",
+    "pinecone_vector_search",
+    "embedding_generation",
+    "iron_rule_enforcement"
+  ],
+  "compliance": {
+    "AGENTS.md": {
+      "requirement": "ในทุกครั้งที่มีคำถามเข้ามา ต้องรันระบบค้นหาแบบคู่ขนาน (Hybrid Search) เสมอ",
+      "implemented": true
+    },
+    "iron_rule": {
+      "description": "แม้จะเจอคำตอบใน Text แล้ว แต่หากพบวิดีโอที่มี Similarity Score > 0.80 ห้ามทิ้ง",
+      "threshold": 0.80,
+      "action": "ส่ง Metadata (URL, Quiz, Reason) แนบไปกับชุดคำตอบเสมอ"
+    }
+  },
+  "search_config": {
+    "parallel_search": {
+      "text_search": {
+        "source": "MEMORY.md",
+        "purpose": "ฐานคำตอบหลัก",
+        "method": "keyword_matching",
+        "max_results": 5
+      },
+      "video_search": {
+        "source": "Pinecone",
+        "namespace": "highlights",
+        "purpose": "หาคลิปที่เกี่ยวข้อง",
+        "method": "vector_similarity",
+        "dimension": 384,
+        "max_results": 5,
+        "min_score": 0.05
+      }
+    }
+  },
+  "functions": {
+    "hybrid_search": {
+      "description": "ค้นหาแบบคู่ขนาน (Text + Video) ตาม AGENTS.md",
+      "parameters": {
+        "query": {
+          "type": "string",
+          "description": "คำค้นหาภาษาไทย",
+          "required": true
+        }
+      },
+      "returns": {
+        "text_results": "ผลลัพธ์จาก MEMORY.md",
+        "video_results": "ผลลัพธ์จาก Pinecone",
+        "high_priority_videos": "วิดีโอที่มี score > 0.80 (กฎเหล็ก!)",
+        "has_high_priority": "boolean - มีวิดีโอ high priority หรือไม่",
+        "iron_rule_applied": "boolean - ใช้กฎเหล็กหรือไม่",
+        "metadata_for_journey_architect": {
+          "description": "ข้อมูลสำหรับ Journey Architect ตัดสินใจป้ายยา",
+          "includes": ["videos", "high_priority", "recommendation"]
+        }
+      }
+    }
+  },
+  "auto_execute": {
+    "enabled": true,
+    "mode": "hybrid_search_always"
+  },
+  "fallback": {
+    "no_results_message": "คุณพี่คะ อุ่นใจไม่เจอข้อมูลที่ตรงกับคำค้นหานี้ ลองถามอย่างอื่นได้นะคะ 💕",
+    "error_message": "ขออภัยค่ะ ระบบค้นหามีปัญหาเล็กน้อย กรุณาลองใหม่ค่ะ"
+  }
+}
